@@ -16,7 +16,7 @@
                     colors: {
                         'wa-red': '#9f2b2b',
                         'wa-gold': '#c1a15f',
-                        'wa-bg': '#fcfaf2',
+                        'wa-bg':   '#fcfaf2',
                         'wa-text': '#333333',
                     }
                 }
@@ -37,7 +37,6 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            position: relative;
         }
         .loader {
             width: 48px;
@@ -50,29 +49,24 @@
             animation: rotation 1s linear infinite;
         }
         @keyframes rotation {
-            0% { transform: rotate(0deg); }
+            0%   { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        input[type="file"] {
-            display: none;
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
+        input[type="file"] { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body class="text-wa-text">
 
-    <!-- カメラ用（背面カメラ優先） -->
-    <input type="file" id="cameraInput" accept="image/*" capture="environment">
-    <!-- ギャラリー用（ファイル選択） -->
-    <input type="file" id="galleryInput" accept="image/*">
+    <!-- ★ capture なし → OSが「撮る／選ぶ」を自動で出してくれる -->
+    <input type="file" id="imageInput" accept="image/*">
 
     <div class="app-container">
+
         <!-- Header -->
         <header class="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10">
             <div class="flex items-center gap-2">
@@ -91,14 +85,14 @@
                     <option value="French">Français</option>
                     <option value="Japanese">日本語</option>
                 </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow p-5 flex flex-col relative">
+        <!-- Main -->
+        <main class="flex-grow p-5 flex flex-col">
 
-            <!-- View: Upload/Camera -->
+            <!-- View: Upload -->
             <div id="view-upload" class="flex-grow flex flex-col items-center justify-center fade-in">
                 <div class="text-center mb-8">
                     <h2 id="mainTitle" class="text-2xl font-bold mb-2">Discover Japan</h2>
@@ -106,30 +100,24 @@
                 </div>
 
                 <!-- プレビューエリア -->
-                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 mb-6 shadow-sm relative overflow-hidden">
+                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex items-center justify-center mb-6 shadow-sm relative overflow-hidden">
                     <div id="imagePreviewContainer" class="absolute inset-0 hidden bg-black">
                         <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-contain">
                     </div>
-                    <div id="uploadPrompt" class="flex flex-col items-center">
+                    <div id="uploadPrompt" class="flex flex-col items-center p-6">
                         <div class="w-16 h-16 bg-wa-red/10 text-wa-red rounded-full flex items-center justify-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                         </div>
-                        <p id="promptMain" class="font-medium text-lg mb-1">Take a photo</p>
-                        <p id="promptSub" class="text-gray-400 text-xs text-center">or upload from gallery</p>
+                        <p id="promptMain" class="font-medium text-lg mb-1">Tap to scan</p>
+                        <p id="promptSub" class="text-gray-400 text-xs text-center">Camera or gallery — your choice</p>
                     </div>
                 </div>
 
-                <!-- 2ボタン構成 -->
-                <div class="w-full max-w-sm flex flex-col gap-3">
-                    <button id="cameraBtn" class="w-full bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md active:scale-95 transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                        <span id="cameraBtnText">Take a Photo</span>
-                    </button>
-                    <button id="galleryBtn" class="w-full bg-white hover:bg-gray-50 text-wa-red font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm border-2 border-wa-red active:scale-95 transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <span id="galleryBtnText">Choose from Gallery</span>
-                    </button>
-                </div>
+                <!-- ボタン1つだけ -->
+                <button id="scanBtn" class="w-full max-w-sm bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-colors shadow-md active:scale-95 transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                    <span id="scanBtnText">Scan Object</span>
+                </button>
             </div>
 
             <!-- View: Loading -->
@@ -146,13 +134,9 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 -mt-12 relative z-10">
-                    <div class="flex items-start justify-between mb-4">
-                        <h2 id="resultTitle" class="text-2xl font-bold text-gray-800 leading-tight"></h2>
-                    </div>
+                    <h2 id="resultTitle" class="text-2xl font-bold text-gray-800 leading-tight mb-4"></h2>
                     <div class="h-1 w-12 bg-wa-gold rounded-full mb-5"></div>
-                    <div class="prose prose-sm text-gray-600 leading-relaxed">
-                        <p id="resultDescription"></p>
-                    </div>
+                    <p id="resultDescription" class="text-sm text-gray-600 leading-relaxed"></p>
                 </div>
                 <button id="resetBtn" class="mt-8 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
@@ -163,28 +147,22 @@
         </main>
 
         <!-- Error Toast -->
-        <div id="errorToast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
+        <div id="errorToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
             Error message
         </div>
+
     </div>
 
-    <!-- ★ lucide は使わずSVGインラインに変更 → 読み込み順エラーを根本解消 -->
     <script>
-        // ============================================================
-        // Worker URL
-        // ============================================================
         const WORKER_URL = "https://wa-mikke.yymmatsu.workers.dev";
 
-        // DOM
         const views = {
             upload:  document.getElementById('view-upload'),
             loading: document.getElementById('view-loading'),
             result:  document.getElementById('view-result')
         };
-        const cameraInput           = document.getElementById('cameraInput');
-        const galleryInput          = document.getElementById('galleryInput');
-        const cameraBtn             = document.getElementById('cameraBtn');
-        const galleryBtn            = document.getElementById('galleryBtn');
+        const imageInput            = document.getElementById('imageInput');
+        const scanBtn               = document.getElementById('scanBtn');
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
         const imagePreview          = document.getElementById('imagePreview');
         const uploadPrompt          = document.getElementById('uploadPrompt');
@@ -195,49 +173,37 @@
         const languageSelect        = document.getElementById('languageSelect');
         const errorToast            = document.getElementById('errorToast');
 
-        // ボタン → input をトリガー
-        cameraBtn.addEventListener('click',  () => cameraInput.click());
-        galleryBtn.addEventListener('click', () => galleryInput.click());
+        scanBtn.addEventListener('click', () => imageInput.click());
 
-        // View Controller
-        function showView(viewName) {
+        function showView(name) {
             Object.values(views).forEach(v => v.classList.add('hidden'));
-            views[viewName].classList.remove('hidden');
+            views[name].classList.remove('hidden');
         }
 
-        function showError(message) {
-            errorToast.textContent = message;
+        function showError(msg) {
+            errorToast.textContent = msg;
             errorToast.classList.remove('opacity-0');
             setTimeout(() => errorToast.classList.add('opacity-0'), 3000);
         }
 
-        // 画像リサイズ＆Base64変換（Canvas）
         function resizeAndConvertImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = (event) => {
+                reader.onload = (e) => {
                     const img = new Image();
-                    img.src = event.target.result;
+                    img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         const MAX = 1280;
-                        let w = img.width;
-                        let h = img.height;
-                        if (w > h) {
-                            if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-                        } else {
-                            if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-                        }
-                        canvas.width  = w;
-                        canvas.height = h;
+                        let w = img.width, h = img.height;
+                        if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+                        else       { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+                        canvas.width = w; canvas.height = h;
                         ctx.drawImage(img, 0, 0, w, h);
-                        const base64String = canvas.toDataURL('image/jpeg', 0.85);
-                        resolve({
-                            fullBase64: base64String,
-                            dataOnly:   base64String.split(',')[1]
-                        });
+                        const b64 = canvas.toDataURL('image/jpeg', 0.85);
+                        resolve({ fullBase64: b64, dataOnly: b64.split(',')[1] });
                     };
                     img.onerror = reject;
                 };
@@ -245,15 +211,11 @@
             });
         }
 
-        // Worker 経由で Gemini API を呼び出す
         async function analyzeViaWorker(base64Data) {
             const res = await fetch(WORKER_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    base64Data: base64Data,
-                    language:   languageSelect.value
-                })
+                body: JSON.stringify({ base64Data, language: languageSelect.value })
             });
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
@@ -262,8 +224,8 @@
             return await res.json();
         }
 
-        // 画像処理共通
-        async function handleFile(file) {
+        imageInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
             if (!file) return;
 
             imagePreview.src = URL.createObjectURL(file);
@@ -279,61 +241,52 @@
 
                 resultTitle.textContent     = result.title || "Unknown Object";
                 resultDescription.innerHTML = (result.description || "Description not available.").replace(/\n/g, '<br>');
-
                 showView('result');
 
-            } catch (error) {
-                console.error("Analysis failed:", error);
+            } catch (err) {
+                console.error(err);
                 showError("Failed to analyze image. Please try again.");
                 resetToUpload();
             }
-        }
-
-        cameraInput.addEventListener('change',  (e) => handleFile(e.target.files[0]));
-        galleryInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        });
 
         resetBtn.addEventListener('click', resetToUpload);
 
         function resetToUpload() {
-            cameraInput.value  = '';
-            galleryInput.value = '';
+            imageInput.value = '';
             imagePreviewContainer.classList.add('hidden');
             uploadPrompt.classList.remove('hidden');
             showView('upload');
         }
 
-        // 言語切り替え
         const i18n = {
             English: {
-                mainTitle:      "Discover Japan",
-                mainSubtitle:   "Snap a photo to uncover the hidden stories of Japanese culture.",
-                promptMain:     "Take a photo",
-                promptSub:      "or upload from gallery",
-                cameraBtnText:  "Take a Photo",
-                galleryBtnText: "Choose from Gallery",
-                resetBtnText:   "Scan Another"
+                mainTitle:     "Discover Japan",
+                mainSubtitle:  "Snap a photo to uncover the hidden stories of Japanese culture.",
+                promptMain:    "Tap to scan",
+                promptSub:     "Camera or gallery — your choice",
+                scanBtnText:   "Scan Object",
+                resetBtnText:  "Scan Another"
             },
             Japanese: {
-                mainTitle:      "日本の魅力を発見",
-                mainSubtitle:   "写真を撮って、日本文化の隠れた物語を見つけましょう。",
-                promptMain:     "写真を撮る",
-                promptSub:      "またはギャラリーから選ぶ",
-                cameraBtnText:  "カメラで撮る",
-                galleryBtnText: "ギャラリーから選ぶ",
-                resetBtnText:   "もう一度スキャン"
+                mainTitle:     "日本の魅力を発見",
+                mainSubtitle:  "写真を撮って、日本文化の隠れた物語を見つけましょう。",
+                promptMain:    "タップしてスキャン",
+                promptSub:     "カメラもギャラリーもOK",
+                scanBtnText:   "スキャンする",
+                resetBtnText:  "もう一度スキャン"
             }
         };
 
         languageSelect.addEventListener('change', (e) => {
             const t = i18n[e.target.value];
             if (!t) return;
-            document.getElementById('mainTitle').textContent      = t.mainTitle;
-            document.getElementById('mainSubtitle').textContent   = t.mainSubtitle;
-            document.getElementById('promptMain').textContent     = t.promptMain;
-            document.getElementById('promptSub').textContent      = t.promptSub;
-            document.getElementById('cameraBtnText').textContent  = t.cameraBtnText;
-            document.getElementById('galleryBtnText').textContent = t.galleryBtnText;
-            document.getElementById('resetBtnText').textContent   = t.resetBtnText;
+            document.getElementById('mainTitle').textContent    = t.mainTitle;
+            document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
+            document.getElementById('promptMain').textContent   = t.promptMain;
+            document.getElementById('promptSub').textContent    = t.promptSub;
+            document.getElementById('scanBtnText').textContent  = t.scanBtnText;
+            document.getElementById('resetBtnText').textContent = t.resetBtnText;
         });
     </script>
 </body>
