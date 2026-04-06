@@ -25,230 +25,325 @@
         }
     </script>
     <style>
-        body { background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
         .app-container {
-            background-color: #fcfaf2; min-height: 100vh; max-width: 480px;
-            margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column; position: relative;
+            background-color: #fcfaf2;
+            min-height: 100vh;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
         .loader {
-            width: 48px; height: 48px; border: 5px solid #f3f3f3;
-            border-bottom-color: #9f2b2b; border-radius: 50%;
-            display: inline-block; box-sizing: border-box;
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-bottom-color: #9f2b2b;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
             animation: rotation 1s linear infinite;
         }
-        @keyframes rotation { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
-        input[type="file"] { display: none; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="text-wa-text">
-<div class="app-container">
-    <header class="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10">
-        <div class="flex items-center gap-2">
-            <div class="bg-wa-red text-white p-1.5 rounded-md">
-                <i data-lucide="scan" class="w-5 h-5"></i>
-            </div>
-            <h1 class="text-xl font-bold text-wa-red tracking-wider">和みっけ</h1>
-        </div>
-        <div class="relative">
-            <select id="languageSelect" class="appearance-none bg-wa-bg border border-gray-200 text-sm rounded-full px-4 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-wa-red/50 font-medium">
-                <option value="English">English</option>
-                <option value="Chinese (Traditional)">繁體中文</option>
-                <option value="Chinese (Simplified)">简体中文</option>
-                <option value="Korean">한국어</option>
-                <option value="Spanish">Español</option>
-                <option value="French">Français</option>
-                <option value="Japanese">日本語</option>
-            </select>
-            <i data-lucide="chevron-down" class="w-4 h-4 absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
-        </div>
-    </header>
 
-    <main class="flex-grow p-5 flex flex-col relative" id="mainContent">
-        <div id="view-upload" class="flex-grow flex flex-col items-center justify-center fade-in">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold mb-2">Discover Japan</h2>
-                <p class="text-gray-500 text-sm">Snap a photo to uncover the hidden stories of Japanese culture.</p>
-            </div>
-            <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 mb-6 shadow-sm relative overflow-hidden">
-                <div id="imagePreviewContainer" class="absolute inset-0 hidden bg-black">
-                    <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-contain">
+    <!-- カメラ用（背面カメラ優先） -->
+    <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    <!-- ギャラリー用（ファイル選択） -->
+    <input type="file" id="galleryInput" accept="image/*">
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10">
+            <div class="flex items-center gap-2">
+                <div class="bg-wa-red text-white p-1.5 rounded-md">
+                    <i data-lucide="scan" class="w-5 h-5"></i>
                 </div>
-                <div id="uploadPrompt" class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-wa-red/10 text-wa-red rounded-full flex items-center justify-center mb-4">
-                        <i data-lucide="camera" class="w-8 h-8"></i>
+                <h1 class="text-xl font-bold text-wa-red tracking-wider">和みっけ</h1>
+            </div>
+            <div class="relative">
+                <select id="languageSelect" class="appearance-none bg-wa-bg border border-gray-200 text-sm rounded-full px-4 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-wa-red/50 font-medium">
+                    <option value="English">English</option>
+                    <option value="Chinese (Traditional)">繁體中文</option>
+                    <option value="Chinese (Simplified)">简体中文</option>
+                    <option value="Korean">한국어</option>
+                    <option value="Spanish">Español</option>
+                    <option value="French">Français</option>
+                    <option value="Japanese">日本語</option>
+                </select>
+                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow p-5 flex flex-col relative" id="mainContent">
+
+            <!-- View: Upload/Camera -->
+            <div id="view-upload" class="flex-grow flex flex-col items-center justify-center fade-in">
+                <div class="text-center mb-8">
+                    <h2 id="mainTitle" class="text-2xl font-bold mb-2">Discover Japan</h2>
+                    <p id="mainSubtitle" class="text-gray-500 text-sm">Snap a photo to uncover the hidden stories of Japanese culture.</p>
+                </div>
+
+                <!-- プレビューエリア -->
+                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 mb-6 shadow-sm relative overflow-hidden">
+                    <div id="imagePreviewContainer" class="absolute inset-0 hidden bg-black">
+                        <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-contain">
                     </div>
-                    <p class="font-medium text-lg mb-1">Take a photo</p>
-                    <p class="text-gray-400 text-xs text-center">or upload from gallery</p>
+                    <div id="uploadPrompt" class="flex flex-col items-center">
+                        <div class="w-16 h-16 bg-wa-red/10 text-wa-red rounded-full flex items-center justify-center mb-4">
+                            <i data-lucide="camera" class="w-8 h-8"></i>
+                        </div>
+                        <p id="promptMain" class="font-medium text-lg mb-1">Take a photo</p>
+                        <p id="promptSub" class="text-gray-400 text-xs text-center">or upload from gallery</p>
+                    </div>
+                </div>
+
+                <!-- 2ボタン構成 -->
+                <div class="w-full max-w-sm flex flex-col gap-3">
+                    <!-- カメラボタン -->
+                    <button id="cameraBtn" class="w-full bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md active:scale-95 transform transition-transform">
+                        <i data-lucide="camera" class="w-5 h-5"></i>
+                        <span id="cameraBtnText">Take a Photo</span>
+                    </button>
+                    <!-- ギャラリーボタン -->
+                    <button id="galleryBtn" class="w-full bg-white hover:bg-gray-50 text-wa-red font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm border-2 border-wa-red active:scale-95 transform transition-transform">
+                        <i data-lucide="image" class="w-5 h-5"></i>
+                        <span id="galleryBtnText">Choose from Gallery</span>
+                    </button>
                 </div>
             </div>
-            <label class="w-full max-w-sm bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md active:scale-95 transform transition-transform">
-                <i data-lucide="aperture" class="w-5 h-5"></i>
-                <span>Scan Object</span>
-                <input type="file" id="imageInput" accept="image/*" capture="environment">
-            </label>
-        </div>
 
-        <div id="view-loading" class="hidden flex-grow flex-col items-center justify-center fade-in">
-            <div class="loader mb-6"></div>
-            <h3 class="text-xl font-bold text-wa-red mb-2">Analyzing...</h3>
-            <p class="text-gray-500 text-sm text-center max-w-xs">AI is reading the cultural context and history of this object.</p>
-        </div>
-
-        <div id="view-result" class="hidden flex-grow flex-col pb-20 fade-in">
-            <div class="w-full aspect-video bg-black rounded-xl overflow-hidden mb-6 shadow-md relative">
-                <img id="resultImage" src="" alt="Analyzed Image" class="w-full h-full object-cover opacity-80">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <!-- View: Loading -->
+            <div id="view-loading" class="hidden flex-grow flex-col items-center justify-center fade-in">
+                <div class="loader mb-6"></div>
+                <h3 class="text-xl font-bold text-wa-red mb-2">Analyzing...</h3>
+                <p class="text-gray-500 text-sm text-center max-w-xs">AI is reading the cultural context and history of this object.</p>
             </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 -mt-12 relative z-10">
-                <div class="flex items-start justify-between mb-4">
-                    <h2 id="resultTitle" class="text-2xl font-bold text-gray-800 leading-tight"></h2>
-                    <button id="speakerBtn" class="text-wa-gold hover:text-yellow-600 p-1"></button>
-                </div>
-                <div class="h-1 w-12 bg-wa-gold rounded-full mb-5"></div>
-                <div class="prose prose-sm text-gray-600 leading-relaxed">
-                    <p id="resultDescription"></p>
-                </div>
-            </div>
-            <button id="resetBtn" class="mt-8 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm transition-colors">
-                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                <span>Scan Another</span>
-            </button>
-        </div>
-    </main>
 
-    <div id="errorToast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
-        Error message
+            <!-- View: Result -->
+            <div id="view-result" class="hidden flex-grow flex-col pb-20 fade-in">
+                <div class="w-full aspect-video bg-black rounded-xl overflow-hidden mb-6 shadow-md relative">
+                    <img id="resultImage" src="" alt="Analyzed Image" class="w-full h-full object-cover opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 -mt-12 relative z-10">
+                    <div class="flex items-start justify-between mb-4">
+                        <h2 id="resultTitle" class="text-2xl font-bold text-gray-800 leading-tight"></h2>
+                        <button id="speakerBtn" class="text-wa-gold hover:text-yellow-600 p-1"></button>
+                    </div>
+                    <div class="h-1 w-12 bg-wa-gold rounded-full mb-5"></div>
+                    <div class="prose prose-sm text-gray-600 leading-relaxed">
+                        <p id="resultDescription"></p>
+                    </div>
+                </div>
+                <button id="resetBtn" class="mt-8 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm transition-colors">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    <span id="resetBtnText">Scan Another</span>
+                </button>
+            </div>
+
+        </main>
+
+        <!-- Error Toast -->
+        <div id="errorToast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
+            Error message
+        </div>
     </div>
-</div>
 
-<script>
-    lucide.createIcons();
-
-    // ============================================================
-    // Worker URL（デプロイ後に確定したURLへ書き換えてください）
-    // ============================================================
-    const WORKER_URL = "https://wa-mikke.yymmatsu.workers.dev";
-
-    const views = {
-        upload: document.getElementById('view-upload'),
-        loading: document.getElementById('view-loading'),
-        result: document.getElementById('view-result')
-    };
-    const imageInput = document.getElementById('imageInput');
-    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-    const imagePreview = document.getElementById('imagePreview');
-    const uploadPrompt = document.getElementById('uploadPrompt');
-    const resultImage = document.getElementById('resultImage');
-    const resultTitle = document.getElementById('resultTitle');
-    const resultDescription = document.getElementById('resultDescription');
-    const resetBtn = document.getElementById('resetBtn');
-    const languageSelect = document.getElementById('languageSelect');
-    const errorToast = document.getElementById('errorToast');
-
-    function showView(viewName) {
-        Object.values(views).forEach(v => v.classList.add('hidden'));
-        views[viewName].classList.remove('hidden');
+    <script>
         lucide.createIcons();
-    }
 
-    function showError(message) {
-        errorToast.textContent = message;
-        errorToast.classList.remove('opacity-0');
-        setTimeout(() => errorToast.classList.add('opacity-0'), 3000);
-    }
+        // ============================================================
+        // Worker URL
+        // ============================================================
+        const WORKER_URL = "https://wa-mikke.yymmatsu.workers.dev";
 
-    function resizeAndConvertImage(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 1024;
-                    const MAX_HEIGHT = 1024;
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const base64String = canvas.toDataURL('image/jpeg', 0.8);
-                    resolve({ fullBase64: base64String, dataOnly: base64String.split(',')[1] });
+        // DOM
+        const views = {
+            upload: document.getElementById('view-upload'),
+            loading: document.getElementById('view-loading'),
+            result: document.getElementById('view-result')
+        };
+        const cameraInput       = document.getElementById('cameraInput');
+        const galleryInput      = document.getElementById('galleryInput');
+        const cameraBtn         = document.getElementById('cameraBtn');
+        const galleryBtn        = document.getElementById('galleryBtn');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview      = document.getElementById('imagePreview');
+        const uploadPrompt      = document.getElementById('uploadPrompt');
+        const resultImage       = document.getElementById('resultImage');
+        const resultTitle       = document.getElementById('resultTitle');
+        const resultDescription = document.getElementById('resultDescription');
+        const resetBtn          = document.getElementById('resetBtn');
+        const languageSelect    = document.getElementById('languageSelect');
+        const errorToast        = document.getElementById('errorToast');
+
+        // ボタン → inputをトリガー
+        cameraBtn.addEventListener('click', () => cameraInput.click());
+        galleryBtn.addEventListener('click', () => galleryInput.click());
+
+        // View Controller
+        function showView(viewName) {
+            Object.values(views).forEach(v => v.classList.add('hidden'));
+            views[viewName].classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function showError(message) {
+            errorToast.textContent = message;
+            errorToast.classList.remove('opacity-0');
+            setTimeout(() => errorToast.classList.add('opacity-0'), 3000);
+        }
+
+        // 画像リサイズ＆Base64変換（Canvas）
+        function resizeAndConvertImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const MAX = 1280;
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > h) {
+                            if (w > MAX) { h *= MAX / w; w = MAX; }
+                        } else {
+                            if (h > MAX) { w *= MAX / h; h = MAX; }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        ctx.drawImage(img, 0, 0, w, h);
+                        const base64String = canvas.toDataURL('image/jpeg', 0.85);
+                        resolve({
+                            fullBase64: base64String,
+                            dataOnly: base64String.split(',')[1]
+                        });
+                    };
+                    img.onerror = reject;
                 };
-                img.onerror = reject;
-            };
-            reader.onerror = reject;
+                reader.onerror = reject;
+            });
+        }
+
+        // Worker 経由で Gemini API を呼び出す
+        async function analyzeViaWorker(base64Data) {
+            const res = await fetch(WORKER_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    base64Data: base64Data,
+                    language: languageSelect.value
+                })
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || `HTTP ${res.status}`);
+            }
+            return await res.json();
+        }
+
+        // 画像処理共通関数
+        async function handleFile(file) {
+            if (!file) return;
+
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreviewContainer.classList.remove('hidden');
+            uploadPrompt.classList.add('hidden');
+
+            try {
+                showView('loading');
+                const imageData = await resizeAndConvertImage(file);
+                resultImage.src = imageData.fullBase64;
+
+                const result = await analyzeViaWorker(imageData.dataOnly);
+
+                resultTitle.textContent = result.title || "Unknown Object";
+                resultDescription.innerHTML = (result.description || "Description not available.").replace(/\n/g, '<br>');
+
+                showView('result');
+
+            } catch (error) {
+                console.error("Analysis failed:", error);
+                showError("Failed to analyze image. Please try again.");
+                resetToUpload();
+            }
+        }
+
+        // カメラ・ギャラリーそれぞれのchange
+        cameraInput.addEventListener('change',  (e) => handleFile(e.target.files[0]));
+        galleryInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        // リセット
+        resetBtn.addEventListener('click', resetToUpload);
+
+        function resetToUpload() {
+            cameraInput.value  = '';
+            galleryInput.value = '';
+            imagePreviewContainer.classList.add('hidden');
+            uploadPrompt.classList.remove('hidden');
+            showView('upload');
+        }
+
+        // 言語切り替え
+        const i18n = {
+            English: {
+                mainTitle:      "Discover Japan",
+                mainSubtitle:   "Snap a photo to uncover the hidden stories of Japanese culture.",
+                promptMain:     "Take a photo",
+                promptSub:      "or upload from gallery",
+                cameraBtnText:  "Take a Photo",
+                galleryBtnText: "Choose from Gallery",
+                resetBtnText:   "Scan Another"
+            },
+            Japanese: {
+                mainTitle:      "日本の魅力を発見",
+                mainSubtitle:   "写真を撮って、日本文化の隠れた物語を見つけましょう。",
+                promptMain:     "写真を撮る",
+                promptSub:      "またはギャラリーから選ぶ",
+                cameraBtnText:  "カメラで撮る",
+                galleryBtnText: "ギャラリーから選ぶ",
+                resetBtnText:   "もう一度スキャン"
+            }
+        };
+
+        languageSelect.addEventListener('change', (e) => {
+            const t = i18n[e.target.value];
+            if (!t) return;
+            document.getElementById('mainTitle').textContent      = t.mainTitle;
+            document.getElementById('mainSubtitle').textContent   = t.mainSubtitle;
+            document.getElementById('promptMain').textContent     = t.promptMain;
+            document.getElementById('promptSub').textContent      = t.promptSub;
+            document.getElementById('cameraBtnText').textContent  = t.cameraBtnText;
+            document.getElementById('galleryBtnText').textContent = t.galleryBtnText;
+            document.getElementById('resetBtnText').textContent   = t.resetBtnText;
         });
-    }
 
-    async function analyzeImage(base64Data) {
-        const language = languageSelect.value;
-        const response = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ base64Data, language }),
-        });
-        if (!response.ok) {
-            const err = await response.json().catch(() => ({}));
-            throw new Error(err.error || "HTTP " + response.status);
-        }
-        return await response.json();
-    }
-
-    imageInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        imagePreview.src = URL.createObjectURL(file);
-        imagePreviewContainer.classList.remove('hidden');
-        uploadPrompt.classList.add('hidden');
-        try {
-            showView('loading');
-            const imageData = await resizeAndConvertImage(file);
-            resultImage.src = imageData.fullBase64;
-            const analysisResult = await analyzeImage(imageData.dataOnly);
-            resultTitle.textContent = analysisResult.title || "Unknown Object";
-            resultDescription.innerHTML = (analysisResult.description || "Description not available.").replace(/\n/g, '<br>');
-            showView('result');
-        } catch (error) {
-            console.error("Analysis failed:", error);
-            showError("Failed to analyze image. Please try again.");
-            resetToUpload();
-        }
-    });
-
-    resetBtn.addEventListener('click', () => resetToUpload());
-
-    function resetToUpload() {
-        imageInput.value = '';
-        imagePreviewContainer.classList.add('hidden');
-        uploadPrompt.classList.remove('hidden');
-        showView('upload');
-    }
-
-    languageSelect.addEventListener('change', (e) => {
-        const lang = e.target.value;
-        const subtitle = document.querySelector('#view-upload p.text-gray-500');
-        const btnText = document.querySelector('label span');
-        if (lang === 'Japanese') {
-            document.querySelector('#view-upload h2').textContent = '日本の魅力を発見';
-            subtitle.textContent = '写真を撮って、日本の文化の隠れた物語を見つけましょう。';
-            btnText.textContent = '写真を撮る / 選ぶ';
-        } else if (lang === 'English') {
-            document.querySelector('#view-upload h2').textContent = 'Discover Japan';
-            subtitle.textContent = 'Snap a photo to uncover the hidden stories of Japanese culture.';
-            btnText.textContent = 'Scan Object';
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
