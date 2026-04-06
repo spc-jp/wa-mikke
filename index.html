@@ -10,11 +10,9 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['"Noto Sans JP"', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] },
                     colors: {
-                        'wa-red': '#9f2b2b',
+                        'wa-red':  '#9f2b2b',
                         'wa-gold': '#c1a15f',
                         'wa-bg':   '#fcfaf2',
                         'wa-text': '#333333',
@@ -39,8 +37,7 @@
             flex-direction: column;
         }
         .loader {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             border: 5px solid #f3f3f3;
             border-bottom-color: #9f2b2b;
             border-radius: 50%;
@@ -52,22 +49,35 @@
             0%   { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        input[type="file"] { display: none; }
+        #imageInput {
+            position: absolute;
+            width: 1px; height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
+        #debugLog {
+            font-size: 11px;
+            color: #555;
+            background: #fffbe6;
+            border: 1px solid #f0d080;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 12px 0 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
     </style>
 </head>
 <body class="text-wa-text">
 
-    <!-- ★ capture なし → OSが「撮る／選ぶ」を自動で出してくれる -->
-    <input type="file" id="imageInput" accept="image/*">
-
     <div class="app-container">
 
-        <!-- Header -->
         <header class="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10">
             <div class="flex items-center gap-2">
                 <div class="bg-wa-red text-white p-1.5 rounded-md">
@@ -76,7 +86,7 @@
                 <h1 class="text-xl font-bold text-wa-red tracking-wider">和みっけ</h1>
             </div>
             <div class="relative">
-                <select id="languageSelect" class="appearance-none bg-wa-bg border border-gray-200 text-sm rounded-full px-4 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-wa-red/50 font-medium">
+                <select id="languageSelect" class="appearance-none bg-wa-bg border border-gray-200 text-sm rounded-full px-4 py-1.5 pr-8 focus:outline-none font-medium">
                     <option value="English">English</option>
                     <option value="Chinese (Traditional)">繁體中文</option>
                     <option value="Chinese (Simplified)">简体中文</option>
@@ -85,49 +95,47 @@
                     <option value="French">Français</option>
                     <option value="Japanese">日本語</option>
                 </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
         </header>
 
-        <!-- Main -->
         <main class="flex-grow p-5 flex flex-col">
 
-            <!-- View: Upload -->
             <div id="view-upload" class="flex-grow flex flex-col items-center justify-center fade-in">
                 <div class="text-center mb-8">
                     <h2 id="mainTitle" class="text-2xl font-bold mb-2">Discover Japan</h2>
                     <p id="mainSubtitle" class="text-gray-500 text-sm">Snap a photo to uncover the hidden stories of Japanese culture.</p>
                 </div>
 
-                <!-- プレビューエリア -->
-                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex items-center justify-center mb-6 shadow-sm relative overflow-hidden">
+                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 mb-6 shadow-sm relative overflow-hidden">
                     <div id="imagePreviewContainer" class="absolute inset-0 hidden bg-black">
                         <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-contain">
                     </div>
-                    <div id="uploadPrompt" class="flex flex-col items-center p-6">
+                    <div id="uploadPrompt" class="flex flex-col items-center">
                         <div class="w-16 h-16 bg-wa-red/10 text-wa-red rounded-full flex items-center justify-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                         </div>
-                        <p id="promptMain" class="font-medium text-lg mb-1">Tap to scan</p>
-                        <p id="promptSub" class="text-gray-400 text-xs text-center">Camera or gallery — your choice</p>
+                        <p id="promptMain" class="font-medium text-lg mb-1">Take a photo</p>
+                        <p id="promptSub" class="text-gray-400 text-xs text-center">or upload from gallery</p>
                     </div>
                 </div>
 
-                <!-- ボタン1つだけ -->
-                <button id="scanBtn" class="w-full max-w-sm bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-colors shadow-md active:scale-95 transform">
+                <!-- ★ iOSに確実に効く label for= 方式 -->
+                <input type="file" id="imageInput" accept="image/*">
+                <label for="imageInput" class="w-full max-w-sm bg-wa-red text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95 transform select-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                     <span id="scanBtnText">Scan Object</span>
-                </button>
+                </label>
+
+                <div id="debugLog"></div>
             </div>
 
-            <!-- View: Loading -->
             <div id="view-loading" class="hidden flex-grow flex-col items-center justify-center fade-in">
                 <div class="loader mb-6"></div>
                 <h3 class="text-xl font-bold text-wa-red mb-2">Analyzing...</h3>
                 <p class="text-gray-500 text-sm text-center max-w-xs">AI is reading the cultural context and history of this object.</p>
             </div>
 
-            <!-- View: Result -->
             <div id="view-result" class="hidden flex-grow flex-col pb-20 fade-in">
                 <div class="w-full aspect-video bg-black rounded-xl overflow-hidden mb-6 shadow-md relative">
                     <img id="resultImage" src="" alt="Analyzed Image" class="w-full h-full object-cover opacity-80">
@@ -138,7 +146,7 @@
                     <div class="h-1 w-12 bg-wa-gold rounded-full mb-5"></div>
                     <p id="resultDescription" class="text-sm text-gray-600 leading-relaxed"></p>
                 </div>
-                <button id="resetBtn" class="mt-8 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm transition-colors">
+                <button id="resetBtn" class="mt-8 bg-gray-100 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
                     <span id="resetBtnText">Scan Another</span>
                 </button>
@@ -146,7 +154,6 @@
 
         </main>
 
-        <!-- Error Toast -->
         <div id="errorToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
             Error message
         </div>
@@ -162,7 +169,6 @@
             result:  document.getElementById('view-result')
         };
         const imageInput            = document.getElementById('imageInput');
-        const scanBtn               = document.getElementById('scanBtn');
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
         const imagePreview          = document.getElementById('imagePreview');
         const uploadPrompt          = document.getElementById('uploadPrompt');
@@ -172,12 +178,19 @@
         const resetBtn              = document.getElementById('resetBtn');
         const languageSelect        = document.getElementById('languageSelect');
         const errorToast            = document.getElementById('errorToast');
+        const debugLog              = document.getElementById('debugLog');
 
-        scanBtn.addEventListener('click', () => imageInput.click());
+        function dbg(msg) {
+            debugLog.style.display = 'block';
+            debugLog.textContent += msg + '\n';
+            console.log(msg);
+        }
 
-        function showView(name) {
-            Object.values(views).forEach(v => v.classList.add('hidden'));
-            views[name].classList.remove('hidden');
+        dbg('✅ スクリプト起動OK');
+
+        function showView(v) {
+            Object.values(views).forEach(el => el.classList.add('hidden'));
+            views[v].classList.remove('hidden');
         }
 
         function showError(msg) {
@@ -188,12 +201,14 @@
 
         function resizeAndConvertImage(file) {
             return new Promise((resolve, reject) => {
+                dbg('📐 リサイズ開始: ' + file.name + ' / ' + file.type);
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
                     const img = new Image();
                     img.src = e.target.result;
                     img.onload = () => {
+                        dbg('🖼 元サイズ: ' + img.width + 'x' + img.height);
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         const MAX = 1280;
@@ -203,30 +218,35 @@
                         canvas.width = w; canvas.height = h;
                         ctx.drawImage(img, 0, 0, w, h);
                         const b64 = canvas.toDataURL('image/jpeg', 0.85);
+                        dbg('✅ Canvas変換完了: ' + w + 'x' + h);
                         resolve({ fullBase64: b64, dataOnly: b64.split(',')[1] });
                     };
-                    img.onerror = reject;
+                    img.onerror = (err) => { dbg('❌ img読込エラー'); reject(err); };
                 };
-                reader.onerror = reject;
+                reader.onerror = (err) => { dbg('❌ FileReaderエラー'); reject(err); };
             });
         }
 
         async function analyzeViaWorker(base64Data) {
+            dbg('🌐 Worker送信中...');
             const res = await fetch(WORKER_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ base64Data, language: languageSelect.value })
             });
+            dbg('📡 応答: HTTP ' + res.status);
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
-                throw new Error(err.error || `HTTP ${res.status}`);
+                throw new Error(err.error || 'HTTP ' + res.status);
             }
             return await res.json();
         }
 
         imageInput.addEventListener('change', async (e) => {
+            dbg('📂 changeイベント発火');
             const file = e.target.files[0];
-            if (!file) return;
+            if (!file) { dbg('⚠️ ファイルなし'); return; }
+            dbg('📄 取得: ' + file.name);
 
             imagePreview.src = URL.createObjectURL(file);
             imagePreviewContainer.classList.remove('hidden');
@@ -236,16 +256,14 @@
                 showView('loading');
                 const imageData = await resizeAndConvertImage(file);
                 resultImage.src = imageData.fullBase64;
-
                 const result = await analyzeViaWorker(imageData.dataOnly);
-
+                dbg('✅ 結果: ' + result.title);
                 resultTitle.textContent     = result.title || "Unknown Object";
-                resultDescription.innerHTML = (result.description || "Description not available.").replace(/\n/g, '<br>');
+                resultDescription.innerHTML = (result.description || "").replace(/\n/g, '<br>');
                 showView('result');
-
             } catch (err) {
-                console.error(err);
-                showError("Failed to analyze image. Please try again.");
+                dbg('❌ ' + err.message);
+                showError("Failed to analyze. Please try again.");
                 resetToUpload();
             }
         });
@@ -256,25 +274,26 @@
             imageInput.value = '';
             imagePreviewContainer.classList.add('hidden');
             uploadPrompt.classList.remove('hidden');
+            debugLog.textContent = '';
             showView('upload');
         }
 
         const i18n = {
             English: {
-                mainTitle:     "Discover Japan",
-                mainSubtitle:  "Snap a photo to uncover the hidden stories of Japanese culture.",
-                promptMain:    "Tap to scan",
-                promptSub:     "Camera or gallery — your choice",
-                scanBtnText:   "Scan Object",
-                resetBtnText:  "Scan Another"
+                mainTitle:    "Discover Japan",
+                mainSubtitle: "Snap a photo to uncover the hidden stories of Japanese culture.",
+                promptMain:   "Take a photo",
+                promptSub:    "or upload from gallery",
+                scanBtnText:  "Scan Object",
+                resetBtnText: "Scan Another"
             },
             Japanese: {
-                mainTitle:     "日本の魅力を発見",
-                mainSubtitle:  "写真を撮って、日本文化の隠れた物語を見つけましょう。",
-                promptMain:    "タップしてスキャン",
-                promptSub:     "カメラもギャラリーもOK",
-                scanBtnText:   "スキャンする",
-                resetBtnText:  "もう一度スキャン"
+                mainTitle:    "日本の魅力を発見",
+                mainSubtitle: "写真を撮って、日本文化の隠れた物語を見つけましょう。",
+                promptMain:   "写真を撮る・選ぶ",
+                promptSub:    "タップして開始",
+                scanBtnText:  "写真をスキャンする",
+                resetBtnText: "もう一度スキャン"
             }
         };
 
