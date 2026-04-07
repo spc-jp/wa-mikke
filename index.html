@@ -1,399 +1,750 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>和みっけ - Wa-mikke</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] },
-                    colors: {
-                        'wa-red':  '#9f2b2b',
-                        'wa-gold': '#c1a15f',
-                        'wa-bg':   '#fcfaf2',
-                        'wa-text': '#333333',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color:#f3f4f6; -webkit-tap-highlight-color:transparent; overflow-x:hidden; }
-        .app-container {
-            background-color:#fcfaf2; min-height:100vh; max-width:480px;
-            margin:0 auto; box-shadow:0 0 20px rgba(0,0,0,0.05);
-            display:flex; flex-direction:column;
-        }
-        .loader {
-            width:48px; height:48px; border:5px solid #f3f3f3;
-            border-bottom-color:#9f2b2b; border-radius:50%;
-            display:inline-block; box-sizing:border-box;
-            animation:rotation 1s linear infinite;
-        }
-        @keyframes rotation { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和みっけ - Wa-mikke | 日本の不思議を解き明かす</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* ★ iOS Safari対応：opacity:0 + 絶対位置で隠す */
-        .file-input-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            overflow: hidden;
-        }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f0ece4;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        .fade-in { animation:fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity:0; transform:translateY(10px); }
-            to   { opacity:1; transform:translateY(0); }
-        }
+  /* 和風グラデーション背景 */
+  .bg-pattern {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(139,0,0,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(208,169,0,0.10) 0%, transparent 50%),
+      #0a0a0a;
+    z-index: 0;
+  }
 
-        /* ゲートオーバーレイ */
-        .gate-overlay {
-            position:fixed; inset:0; background:rgba(0,0,0,0.85);
-            display:flex; align-items:center; justify-content:center;
-            z-index:100; padding:24px;
-        }
-        .gate-card {
-            background:#fcfaf2; border-radius:20px; padding:32px 24px;
-            max-width:380px; width:100%; text-align:center;
-        }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
 
-        /* 残回数ドット */
-        .trial-dot {
-            width:10px; height:10px; border-radius:50%;
-            background:#9f2b2b; display:inline-block; margin:0 3px;
-        }
-        .trial-dot.used { background:#ddd; }
-    </style>
+  /* ヘッダー */
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+  }
+
+  .logo-mark {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .title-ja {
+    font-size: 28px;
+    font-weight: 700;
+    color: #D0A900;
+    letter-spacing: 0.15em;
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  .title-en {
+    font-size: 14px;
+    color: #8b8b8b;
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+  }
+
+  .tagline {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #c0b090;
+    line-height: 1.6;
+  }
+
+  /* 言語選択 */
+  .lang-section {
+    margin-bottom: 20px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .lang-btn {
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #ccc;
+    padding: 10px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .lang-btn:hover, .lang-btn.active {
+    border-color: #D0A900;
+    color: #D0A900;
+    background: rgba(208,169,0,0.08);
+  }
+
+  /* アップロードエリア */
+  .upload-area {
+    border: 2px dashed #333;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.02);
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .upload-area:hover {
+    border-color: #8b0000;
+    background: rgba(139,0,0,0.05);
+  }
+
+  .upload-area.has-image {
+    border-color: #D0A900;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+
+  .upload-text {
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  .upload-hint {
+    font-size: 12px;
+    color: #555;
+    margin-top: 8px;
+  }
+
+  .preview-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+  }
+
+  .change-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #D0A900;
+    border: 1px solid #D0A900;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  input[type="file"] { display: none; }
+
+  /* カメラボタン */
+  .camera-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #aaa;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+  }
+
+  .camera-btn:hover {
+    border-color: #8b0000;
+    color: #f0ece4;
+  }
+
+  /* 解析ボタン */
+  .analyze-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #8b0000, #c0392b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    margin-bottom: 16px;
+  }
+
+  .analyze-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139,0,0,0.4);
+  }
+
+  .analyze-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* 結果エリア */
+  .result-card {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+    display: none;
+  }
+
+  .result-card.visible { display: block; }
+
+  .result-badge {
+    display: inline-block;
+    background: rgba(208,169,0,0.15);
+    color: #D0A900;
+    border: 1px solid rgba(208,169,0,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+  }
+
+  .result-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0ece4;
+    margin-bottom: 12px;
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  .result-body {
+    font-size: 15px;
+    color: #c8c0b0;
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .result-divider {
+    border: none;
+    border-top: 1px solid #222;
+    margin: 16px 0;
+  }
+
+  .share-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .share-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #aaa;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .share-btn:hover {
+    border-color: #D0A900;
+    color: #D0A900;
+  }
+
+  /* ローディング */
+  .loading {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+
+  .loading.visible { display: block; }
+
+  .torii {
+    font-size: 48px;
+    animation: float 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .loading-text {
+    margin-top: 16px;
+    color: #888;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* 使用回数 */
+  .trial-bar {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #777;
+  }
+
+  .trial-count { color: #D0A900; font-weight: 700; }
+
+  /* ペイウォール */
+  .paywall {
+    background: linear-gradient(135deg, #1a0a00, #0a0a1a);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    display: none;
+  }
+
+  .paywall.visible { display: block; }
+
+  .paywall-icon { font-size: 48px; margin-bottom: 16px; }
+  .paywall-title { font-size: 20px; color: #D0A900; font-weight: 700; margin-bottom: 12px; }
+  .paywall-text { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+
+  .paywall-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #D0A900, #b8900a);
+    color: #000;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 10px;
+  }
+
+  /* サンプル examples */
+  .examples {
+    margin-top: 28px;
+  }
+
+  .examples-title {
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .example-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .chip {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: #999;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  /* エラー */
+  .error-msg {
+    background: rgba(139,0,0,0.15);
+    border: 1px solid rgba(139,0,0,0.3);
+    color: #ff8080;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  @media (max-width: 400px) {
+    .lang-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
 </head>
-<body class="text-wa-text">
+<body>
 
-    <div class="app-container">
+<div class="bg-pattern"></div>
 
-        <!-- Header -->
-        <header class="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10">
-            <div class="flex items-center gap-2">
-                <div class="bg-wa-red text-white p-1.5 rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
-                </div>
-                <h1 class="text-xl font-bold text-wa-red tracking-wider">和みっけ</h1>
-            </div>
-            <div class="relative">
-                <select id="languageSelect" class="appearance-none bg-wa-bg border border-gray-200 text-sm rounded-full px-4 py-1.5 pr-8 focus:outline-none focus:ring-2 focus:ring-wa-red/50 font-medium">
-                    <option value="English">English</option>
-                    <option value="Chinese (Traditional)">繁體中文</option>
-                    <option value="Chinese (Simplified)">简体中文</option>
-                    <option value="Korean">한국어</option>
-                    <option value="Spanish">Español</option>
-                    <option value="French">Français</option>
-                    <option value="Japanese">日本語</option>
-                </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-        </header>
+<div class="container">
 
-        <!-- Main -->
-        <main class="flex-grow p-5 flex flex-col">
-
-            <!-- View: Upload -->
-            <div id="view-upload" class="flex-grow flex flex-col items-center justify-center fade-in">
-                <div class="text-center mb-8">
-                    <h2 id="mainTitle" class="text-2xl font-bold mb-2">Discover Japan</h2>
-                    <p id="mainSubtitle" class="text-gray-500 text-sm">Snap a photo to uncover the hidden stories of Japanese culture.</p>
-                </div>
-
-                <!-- プレビューエリア -->
-                <div class="w-full max-w-sm aspect-[4/5] bg-white rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 mb-6 shadow-sm relative overflow-hidden">
-                    <div id="imagePreviewContainer" class="absolute inset-0 hidden bg-black">
-                        <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-contain">
-                    </div>
-                    <div id="uploadPrompt" class="flex flex-col items-center">
-                        <div class="w-16 h-16 bg-wa-red/10 text-wa-red rounded-full flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                        </div>
-                        <p id="promptMain" class="font-medium text-lg mb-1">Take a photo</p>
-                        <p id="promptSub" class="text-gray-400 text-xs text-center">or upload from gallery</p>
-                    </div>
-                </div>
-
-                <!-- 残回数ドット -->
-                <div id="trialDots" class="flex items-center justify-center gap-1 mb-4 hidden">
-                    <span class="text-xs text-gray-400 mr-2">Free trial</span>
-                    <span class="trial-dot" id="dot1"></span>
-                    <span class="trial-dot" id="dot2"></span>
-                    <span class="trial-dot" id="dot3"></span>
-                </div>
-
-                <!-- ★ labelの中にinputを入れる（iOS Safari最も確実な方式） -->
-                <label id="scanLabel" class="w-full max-w-sm bg-wa-red hover:bg-red-800 text-white font-bold py-4 px-6 rounded-full flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-md active:scale-95 transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                    <span id="scanBtnText">Scan Object</span>
-                    <input type="file" id="imageInput" accept="image/*" class="file-input-hidden">
-                </label>
-            </div>
-
-            <!-- View: Loading -->
-            <div id="view-loading" class="hidden flex-grow flex-col items-center justify-center fade-in">
-                <div class="loader mb-6"></div>
-                <h3 class="text-xl font-bold text-wa-red mb-2">Analyzing...</h3>
-                <p class="text-gray-500 text-sm text-center max-w-xs">AI is reading the cultural context and history of this object.</p>
-            </div>
-
-            <!-- View: Result -->
-            <div id="view-result" class="hidden flex-grow flex-col pb-20 fade-in">
-                <div class="w-full aspect-video bg-black rounded-xl overflow-hidden mb-6 shadow-md relative">
-                    <img id="resultImage" src="" alt="Analyzed Image" class="w-full h-full object-cover opacity-80">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                </div>
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 -mt-12 relative z-10">
-                    <h2 id="resultTitle" class="text-2xl font-bold text-gray-800 leading-tight mb-4"></h2>
-                    <div class="h-1 w-12 bg-wa-gold rounded-full mb-5"></div>
-                    <p id="resultDescription" class="text-sm text-gray-600 leading-relaxed"></p>
-                </div>
-
-                <!-- もう一度スキャン：labelの中にinputを入れる -->
-                <label class="mt-8 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 mx-auto shadow-sm transition-colors cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
-                    <span id="resetBtnText">Scan Another</span>
-                    <input type="file" id="imageInput2" accept="image/*" class="file-input-hidden">
-                </label>
-            </div>
-
-        </main>
-
-        <!-- Error Toast -->
-        <div id="errorToast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 text-sm whitespace-nowrap">
-            Error message
-        </div>
+  <!-- ヘッダー -->
+  <div class="header">
+    <div class="logo-mark">⛩️</div>
+    <div class="title-ja">和みっけ</div>
+    <div class="title-en">WA-MIKKE</div>
+    <div class="tagline">
+      「これって何だろう？」を、文化の物語に。<br>
+      <span style="font-size:12px;color:#666;">Discover the hidden stories of Japan.</span>
     </div>
+  </div>
 
-    <!-- ゲートオーバーレイ -->
-    <div id="gateOverlay" class="gate-overlay hidden">
-        <div class="gate-card">
-            <div class="text-4xl mb-4">🌸</div>
-            <h3 class="text-xl font-bold text-wa-red mb-2">無料体験は3回までです</h3>
-            <p class="text-gray-500 text-sm mb-6 leading-relaxed">続けてお使いいただくには<br>月額プランへのご登録をお願いします。</p>
-            <a href="https://buy.stripe.com/bJeaEW5ey0AJcd9aN6cV20s" target="_blank"
-               class="block w-full bg-wa-red text-white font-bold py-4 rounded-full text-center shadow-md mb-4 hover:bg-red-800 transition-colors">
-                🔒 月額¥1,980で使い放題にする
-            </a>
-            <p class="text-xs text-gray-400 mb-6">ご購入後、パスワードをメールでお送りします</p>
-            <div class="border-t border-gray-200 pt-5">
-                <p class="text-sm text-gray-500 mb-3">すでにパスワードをお持ちの方</p>
-                <input type="password" id="passwordInput"
-                    placeholder="パスワードを入力"
-                    class="w-full border border-gray-300 rounded-full px-5 py-3 text-sm text-center focus:outline-none focus:ring-2 focus:ring-wa-red/50 mb-3">
-                <button id="passwordBtn"
-                    class="w-full bg-gray-700 hover:bg-gray-900 text-white font-bold py-3 rounded-full transition-colors text-sm">
-                    認証して使い続ける
-                </button>
-                <p id="passwordError" class="text-xs text-red-500 mt-2 hidden">パスワードが正しくありません</p>
-            </div>
-        </div>
+  <!-- 使用回数バー -->
+  <div class="trial-bar">
+    <span>🎌 無料体験</span>
+    <span>あと <span class="trial-count" id="trialCount">3</span> 回使えます</span>
+  </div>
+
+  <!-- 言語選択 -->
+  <div class="lang-section">
+    <div class="section-label">🌏 Your Language / 説明する言語</div>
+    <div class="lang-grid">
+      <button class="lang-btn active" data-lang="en" onclick="selectLang(this)">🇺🇸 English</button>
+      <button class="lang-btn" data-lang="zh" onclick="selectLang(this)">🇨🇳 中文</button>
+      <button class="lang-btn" data-lang="ko" onclick="selectLang(this)">🇰🇷 한국어</button>
+      <button class="lang-btn" data-lang="fr" onclick="selectLang(this)">🇫🇷 Français</button>
+      <button class="lang-btn" data-lang="de" onclick="selectLang(this)">🇩🇪 Deutsch</button>
+      <button class="lang-btn" data-lang="es" onclick="selectLang(this)">🇪🇸 Español</button>
+      <button class="lang-btn" data-lang="pt" onclick="selectLang(this)">🇵🇹 Português</button>
+      <button class="lang-btn" data-lang="th" onclick="selectLang(this)">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn" data-lang="ja" onclick="selectLang(this)">🇯🇵 日本語</button>
     </div>
+  </div>
 
-    <script>
-        const WORKER_URL  = "https://wa-mikke.yymmatsu.workers.dev";
-        const FREE_LIMIT  = 3;
-        const STORAGE_KEY = "wa_mikke_count";
-        const AUTH_KEY    = "wa_mikke_auth";
+  <!-- アップロード -->
+  <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">
+      不思議なものを撮影・アップロード<br>
+      <span style="font-size:13px;color:#666;">Tap to take or upload a photo</span>
+    </div>
+    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+  </div>
 
-        let isAuthed = localStorage.getItem(AUTH_KEY) === "1";
-        let useCount = parseInt(localStorage.getItem(STORAGE_KEY) || "0");
+  <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
 
-        const views = {
-            upload:  document.getElementById('view-upload'),
-            loading: document.getElementById('view-loading'),
-            result:  document.getElementById('view-result')
-        };
-        const imageInput            = document.getElementById('imageInput');
-        const imageInput2           = document.getElementById('imageInput2');
-        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-        const imagePreview          = document.getElementById('imagePreview');
-        const uploadPrompt          = document.getElementById('uploadPrompt');
-        const resultImage           = document.getElementById('resultImage');
-        const resultTitle           = document.getElementById('resultTitle');
-        const resultDescription     = document.getElementById('resultDescription');
-        const languageSelect        = document.getElementById('languageSelect');
-        const errorToast            = document.getElementById('errorToast');
-        const gateOverlay           = document.getElementById('gateOverlay');
-        const passwordInput         = document.getElementById('passwordInput');
-        const passwordBtn           = document.getElementById('passwordBtn');
-        const passwordError         = document.getElementById('passwordError');
-        const trialDots             = document.getElementById('trialDots');
+  <!-- カメラ直接起動（スマホ用） -->
+  <button class="camera-btn" onclick="openCamera()">
+    📸 カメラで直接撮影する（スマホ向け）
+  </button>
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
 
-        updateTrialDots();
+  <!-- 解析ボタン -->
+  <button class="analyze-btn" id="analyzeBtn" disabled onclick="analyze()">
+    ⛩️ 日本の文化を解き明かす
+  </button>
 
-        function updateTrialDots() {
-            if (isAuthed) { trialDots.classList.add('hidden'); return; }
-            trialDots.classList.remove('hidden');
-            for (let i = 1; i <= 3; i++) {
-                document.getElementById('dot' + i).classList.toggle('used', i <= useCount);
-            }
-        }
+  <!-- エラー -->
+  <div class="error-msg" id="errorMsg"></div>
 
-        function showView(v) {
-            Object.values(views).forEach(el => el.classList.add('hidden'));
-            views[v].classList.remove('hidden');
-        }
+  <!-- ローディング -->
+  <div class="loading" id="loading">
+    <div class="torii">⛩️</div>
+    <div class="loading-text">
+      日本の歴史と文化の扉を開いています...<br>
+      <span style="font-size:12px;color:#555;">Exploring Japan's cultural history...</span>
+    </div>
+  </div>
 
-        function showError(msg) {
-            errorToast.textContent = msg;
-            errorToast.classList.remove('opacity-0');
-            setTimeout(() => errorToast.classList.add('opacity-0'), 3000);
-        }
+  <!-- 結果 -->
+  <div class="result-card" id="resultCard">
+    <div class="result-badge">🎌 CULTURAL DISCOVERY</div>
+    <div class="result-title" id="resultTitle"></div>
+    <hr class="result-divider">
+    <div class="result-body" id="resultBody"></div>
+    <hr class="result-divider">
+    <div class="share-row">
+      <button class="share-btn" onclick="copyResult()">📋 コピー</button>
+      <button class="share-btn" onclick="shareX()">𝕏 でシェア</button>
+      <button class="share-btn" onclick="analyzeNew()">🔄 別の写真</button>
+    </div>
+  </div>
 
-        function resizeAndConvertImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const MAX = 1280;
-                        let w = img.width, h = img.height;
-                        if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
-                        else       { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
-                        canvas.width = w; canvas.height = h;
-                        ctx.drawImage(img, 0, 0, w, h);
-                        const b64 = canvas.toDataURL('image/jpeg', 0.85);
-                        resolve({ fullBase64: b64, dataOnly: b64.split(',')[1] });
-                    };
-                    img.onerror = reject;
-                };
-                reader.onerror = reject;
-            });
-        }
+  <!-- ペイウォール -->
+  <div class="paywall" id="paywall">
+    <div class="paywall-icon">🏮</div>
+    <div class="paywall-title">もっと日本を知りたいですか？</div>
+    <div class="paywall-text">
+      無料体験の3回が終了しました。<br>
+      Pro版では無制限で日本文化の謎を解き明かせます。<br><br>
+      <span style="color:#D0A900;">¥980/月（いつでも解約可能）</span>
+    </div>
+    <a href="https://buy.stripe.com/your-link" class="paywall-btn">
+      🎌 Pro版で続ける — ¥980/月
+    </a>
+  </div>
 
-        async function analyzeViaWorker(base64Data) {
-            const res = await fetch(WORKER_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ base64Data, language: languageSelect.value })
-            });
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({}));
-                throw new Error(err.error || `HTTP ${res.status}`);
-            }
-            return await res.json();
-        }
+  <!-- サンプル -->
+  <div class="examples">
+    <div class="examples-title">こんなものを撮ってみてください 📸</div>
+    <div class="example-chips">
+      <div class="chip">🦝 タヌキの置物</div>
+      <div class="chip">🍽️ 居酒屋のお通し</div>
+      <div class="chip">🚿 手水舎</div>
+      <div class="chip">🎋 絵馬</div>
+      <div class="chip">🪅 招き猫</div>
+      <div class="chip">⛩️ 注連縄</div>
+      <div class="chip">🏮 赤い提灯</div>
+      <div class="chip">🎏 鯉のぼり</div>
+      <div class="chip">🗿 地蔵様</div>
+    </div>
+  </div>
 
-        async function handleFile(file) {
-            if (!file) return;
+</div>
 
-            // 回数チェック
-            if (!isAuthed && useCount >= FREE_LIMIT) {
-                gateOverlay.classList.remove('hidden');
-                return;
-            }
+<script>
+// ========================================
+// 設定
+// ========================================
+const WORKER_URL = 'https://wa-mikke.yymmatsu.workers.dev';
+const FREE_LIMIT = 3;
+const STORAGE_KEY = 'wamikke_uses';
 
-            imagePreview.src = URL.createObjectURL(file);
-            imagePreviewContainer.classList.remove('hidden');
-            uploadPrompt.classList.add('hidden');
+// ========================================
+// 状態管理
+// ========================================
+let selectedLang = 'en';
+let imageBase64 = null;
+let imageMime = 'image/jpeg';
 
-            try {
-                showView('loading');
-                const imageData = await resizeAndConvertImage(file);
-                resultImage.src = imageData.fullBase64;
-                const result = await analyzeViaWorker(imageData.dataOnly);
+// ========================================
+// 言語選択
+// ========================================
+function selectLang(btn) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedLang = btn.dataset.lang;
+}
 
-                if (!isAuthed) {
-                    useCount++;
-                    localStorage.setItem(STORAGE_KEY, useCount);
-                    updateTrialDots();
-                }
+// ========================================
+// ファイル処理（Canvas圧縮）
+// ========================================
+function handleFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-                resultTitle.textContent     = result.title || "Unknown Object";
-                resultDescription.innerHTML = (result.description || "").replace(/\n/g, '<br>');
-                showView('result');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Canvas で 1280px にリサイズ
+      const canvas = document.createElement('canvas');
+      const MAX = 1280;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      imageBase64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+      imageMime = 'image/jpeg';
 
-            } catch (err) {
-                console.error(err);
-                showError("Failed to analyze image. Please try again.");
-                resetToUpload();
-            }
-        }
+      // プレビュー表示
+      const area = document.getElementById('uploadArea');
+      area.classList.add('has-image');
+      area.innerHTML = `
+        <img src="${canvas.toDataURL('image/jpeg', 0.85)}" class="preview-img">
+        <button class="change-btn" onclick="changeImage(event)">✏️ 変更</button>
+      `;
+      document.getElementById('analyzeBtn').disabled = false;
 
-        // 2つのinputどちらも同じhandleFileを呼ぶ
-        imageInput.addEventListener('change',  (e) => { handleFile(e.target.files[0]); e.target.value = ''; });
-        imageInput2.addEventListener('change', (e) => { handleFile(e.target.files[0]); e.target.value = ''; });
+      // 結果・エラーリセット
+      hide('resultCard'); hide('errorMsg');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 
-        function resetToUpload() {
-            imagePreviewContainer.classList.add('hidden');
-            uploadPrompt.classList.remove('hidden');
-            showView('upload');
-        }
+function openCamera() {
+  document.getElementById('cameraInput').click();
+}
 
-        // パスワード認証
-        passwordBtn.addEventListener('click', async () => {
-            const pw = passwordInput.value.trim();
-            if (!pw) return;
-            passwordBtn.textContent = '確認中...';
-            passwordBtn.disabled    = true;
-            passwordError.classList.add('hidden');
-            try {
-                const res = await fetch(WORKER_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ base64Data: "CHECK_PASSWORD", language: "Japanese", password: pw })
-                });
-                const data = await res.json();
-                if (data.valid) {
-                    localStorage.setItem(AUTH_KEY, "1");
-                    isAuthed = true;
-                    gateOverlay.classList.add('hidden');
-                    updateTrialDots();
-                    resetToUpload();
-                } else {
-                    passwordError.classList.remove('hidden');
-                }
-            } catch (err) {
-                showError("認証に失敗しました。もう一度お試しください。");
-            } finally {
-                passwordBtn.textContent = '認証して使い続ける';
-                passwordBtn.disabled    = false;
-            }
-        });
+function changeImage(e) {
+  e.stopPropagation();
+  document.getElementById('fileInput').click();
+}
 
-        passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') passwordBtn.click(); });
+// ========================================
+// 使用回数管理
+// ========================================
+function getUses() {
+  return parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+}
 
-        // 言語切り替え
-        const i18n = {
-            English: {
-                mainTitle:    "Discover Japan",
-                mainSubtitle: "Snap a photo to uncover the hidden stories of Japanese culture.",
-                promptMain:   "Take a photo",
-                promptSub:    "or upload from gallery",
-                scanBtnText:  "Scan Object",
-                resetBtnText: "Scan Another"
-            },
-            Japanese: {
-                mainTitle:    "日本の魅力を発見",
-                mainSubtitle: "写真を撮って、日本文化の隠れた物語を見つけましょう。",
-                promptMain:   "写真を撮る・選ぶ",
-                promptSub:    "タップして開始",
-                scanBtnText:  "写真をスキャンする",
-                resetBtnText: "もう一度スキャン"
-            }
-        };
+function incrementUses() {
+  const n = getUses() + 1;
+  localStorage.setItem(STORAGE_KEY, n);
+  return n;
+}
 
-        languageSelect.addEventListener('change', (e) => {
-            const t = i18n[e.target.value];
-            if (!t) return;
-            document.getElementById('mainTitle').textContent    = t.mainTitle;
-            document.getElementById('mainSubtitle').textContent = t.mainSubtitle;
-            document.getElementById('promptMain').textContent   = t.promptMain;
-            document.getElementById('promptSub').textContent    = t.promptSub;
-            document.getElementById('scanBtnText').textContent  = t.scanBtnText;
-            document.getElementById('resetBtnText').textContent = t.resetBtnText;
-        });
-    </script>
+function updateTrialBar() {
+  const uses = getUses();
+  const remaining = Math.max(0, FREE_LIMIT - uses);
+  document.getElementById('trialCount').textContent = remaining;
+}
+
+updateTrialBar();
+
+// ========================================
+// 解析メイン
+// ========================================
+async function analyze() {
+  if (!imageBase64) return;
+
+  const uses = getUses();
+  if (uses >= FREE_LIMIT) {
+    show('paywall');
+    return;
+  }
+
+  show('loading');
+  hide('resultCard'); hide('errorMsg'); hide('paywall');
+  document.getElementById('analyzeBtn').disabled = true;
+
+  const langNames = {
+    en: 'English', zh: 'Chinese (Simplified)', ko: 'Korean',
+    fr: 'French', de: 'German', es: 'Spanish',
+    pt: 'Portuguese', th: 'Thai', ja: 'Japanese'
+  };
+
+  const systemPrompt = `You are a warm, knowledgeable cultural guide specializing in Japanese culture, history, and daily life. When someone shows you a photo of something from Japan, you identify it and provide a rich, engaging cultural explanation. Always respond in ${langNames[selectedLang]}.
+
+Structure your response exactly like this:
+[NAME]: The name of the item/thing (in ${langNames[selectedLang]} and Japanese if different)
+[STORY]: A warm, engaging cultural explanation (3-5 paragraphs). Cover: what it is, its historical origin, cultural significance, and why Japanese people use/have it. Include surprising or lesser-known facts. Write like a friendly local sharing a secret, not like a textbook.
+[TIP]: One practical tip for the visitor (e.g., how to interact with it, what to say, or related experiences to seek out).
+
+If you cannot identify the content as something from Japan, kindly ask them to try another photo of something they found interesting in Japan.`;
+
+  const userPrompt = `I found this in Japan and I'm curious what it is and what it means culturally. Please explain it to me in ${langNames[selectedLang]}.`;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1200,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
+            { type: 'text', text: userPrompt }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API Error: ${response.status}`);
+    const data = await response.json();
+    const text = data.content[0].text;
+
+    // パース
+    const nameMatch = text.match(/\[NAME\]:\s*(.+)/);
+    const storyMatch = text.match(/\[STORY\]:\s*([\s\S]+?)(?=\[TIP\]|$)/);
+    const tipMatch = text.match(/\[TIP\]:\s*([\s\S]+)/);
+
+    const title = nameMatch ? nameMatch[1].trim() : '発見！';
+    const body = (storyMatch ? storyMatch[1].trim() : text)
+      + (tipMatch ? '\n\n💡 ' + tipMatch[1].trim() : '');
+
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultBody').textContent = body;
+
+    show('resultCard');
+    incrementUses();
+    updateTrialBar();
+
+    const remaining = FREE_LIMIT - getUses();
+    if (remaining <= 0) {
+      setTimeout(() => show('paywall'), 1500);
+    }
+
+  } catch(err) {
+    showError('解析中にエラーが発生しました。もう一度お試しください。\n' + err.message);
+  } finally {
+    hide('loading');
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+// ========================================
+// シェア・ユーティリティ
+// ========================================
+function copyResult() {
+  const title = document.getElementById('resultTitle').textContent;
+  const body = document.getElementById('resultBody').textContent;
+  navigator.clipboard.writeText(`${title}\n\n${body}\n\n#和みっけ #WaMikke #Japan`);
+  alert('コピーしました！');
+}
+
+function shareX() {
+  const title = document.getElementById('resultTitle').textContent;
+  const text = encodeURIComponent(`${title} を和みっけで発見！🎌 #WaMikke #VisitJapan`);
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function analyzeNew() {
+  imageBase64 = null;
+  const area = document.getElementById('uploadArea');
+  area.classList.remove('has-image');
+  area.innerHTML = `
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#666;">Tap to take or upload a photo</span></div>
+    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+  `;
+  area.onclick = () => document.getElementById('fileInput').click();
+  document.getElementById('analyzeBtn').disabled = true;
+  hide('resultCard'); hide('errorMsg');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========================================
+// 表示制御
+// ========================================
+function show(id) { document.getElementById(id).classList.add('visible'); }
+function hide(id) { document.getElementById(id).classList.remove('visible'); }
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+</script>
+
 </body>
 </html>
