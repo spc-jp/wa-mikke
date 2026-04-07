@@ -9,8 +9,8 @@
 
   body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: #0a0a0a;
-    color: #f0ece4;
+    background: #000000;
+    color: #F9F6EC;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -20,9 +20,9 @@
     top: 0; left: 0;
     width: 100%; height: 100%;
     background:
-      radial-gradient(ellipse at 20% 20%, rgba(139,0,0,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(208,169,0,0.10) 0%, transparent 50%),
-      #0a0a0a;
+      radial-gradient(ellipse at 20% 20%, rgba(80,34,0,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(192,153,51,0.10) 0%, transparent 50%),
+      #000000;
     z-index: 0;
   }
 
@@ -48,7 +48,7 @@
   .title-ja {
     font-size: 28px;
     font-weight: 700;
-    color: #D0A900;
+    color: #C09933;
     letter-spacing: 0.15em;
     font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
     transition: opacity 0.2s;
@@ -58,7 +58,7 @@
 
   .title-en {
     font-size: 14px;
-    color: #8b8b8b;
+    color: #6b5a3a;
     letter-spacing: 0.2em;
     margin-top: 4px;
   }
@@ -66,7 +66,7 @@
   .tagline {
     margin-top: 12px;
     font-size: 13px;
-    color: #c0b090;
+    color: #c8b89a;
     line-height: 1.6;
   }
 
@@ -74,7 +74,7 @@
 
   .section-label {
     font-size: 12px;
-    color: #888;
+    color: #7a6a4a;
     letter-spacing: 0.1em;
     margin-bottom: 8px;
     text-transform: uppercase;
@@ -87,9 +87,9 @@
   }
 
   .lang-btn {
-    background: #1a1a1a;
-    border: 1.5px solid #333;
-    color: #ccc;
+    background: #111;
+    border: 1.5px solid #2a2010;
+    color: #c8b89a;
     padding: 10px 6px;
     border-radius: 8px;
     cursor: pointer;
@@ -99,30 +99,30 @@
   }
 
   .lang-btn:hover, .lang-btn.active {
-    border-color: #D0A900;
-    color: #D0A900;
-    background: rgba(208,169,0,0.08);
+    border-color: #C09933;
+    color: #C09933;
+    background: rgba(192,153,51,0.08);
   }
 
   .upload-area {
-    border: 2px dashed #333;
+    border: 2px dashed #2a2010;
     border-radius: 16px;
     padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s;
-    background: rgba(255,255,255,0.02);
+    background: rgba(80,34,0,0.05);
     margin-bottom: 16px;
     position: relative;
   }
 
   .upload-area:hover {
-    border-color: #8b0000;
-    background: rgba(139,0,0,0.05);
+    border-color: #502200;
+    background: rgba(80,34,0,0.12);
   }
 
   .upload-area.has-image {
-    border-color: #D0A900;
+    border-color: #C09933;
     padding: 0;
     overflow: hidden;
   }
@@ -131,13 +131,13 @@
 
   .upload-text {
     font-size: 15px;
-    color: #aaa;
+    color: #a09070;
     line-height: 1.6;
   }
 
   .upload-hint {
     font-size: 12px;
-    color: #555;
+    color: #4a3a20;
     margin-top: 8px;
   }
 
@@ -153,9 +153,9 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(0,0,0,0.7);
-    color: #D0A900;
-    border: 1px solid #D0A900;
+    background: rgba(0,0,0,0.75);
+    color: #C09933;
+    border: 1px solid #C09933;
     border-radius: 6px;
     padding: 4px 10px;
     font-size: 12px;
@@ -167,9 +167,9 @@
   .camera-btn {
     width: 100%;
     padding: 12px;
-    background: #1a1a1a;
-    border: 1.5px solid #333;
-    color: #aaa;
+    background: #111;
+    border: 1.5px solid #2a2010;
+    color: #a09070;
     border-radius: 10px;
     font-size: 14px;
     cursor: pointer;
@@ -178,15 +178,15 @@
   }
 
   .camera-btn:hover {
-    border-color: #8b0000;
-    color: #f0ece4;
+    border-color: #502200;
+    color: #F9F6EC;
   }
 
   .analyze-btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #8b0000, #c0392b);
-    color: #fff;
+    background: linear-gradient(135deg, #502200, #7a3a00);
+    color: #F9F6EC;
     border: none;
     border-radius: 12px;
     font-size: 16px;
@@ -199,18 +199,18 @@
 
   .analyze-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(139,0,0,0.4);
+    box-shadow: 0 8px 24px rgba(80,34,0,0.5);
   }
 
   .analyze-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
     transform: none;
   }
 
   .result-card {
-    background: #111;
-    border: 1px solid #2a2a2a;
+    background: #0d0900;
+    border: 1px solid #2a2010;
     border-radius: 16px;
     padding: 24px;
     margin-top: 20px;
@@ -221,9 +221,9 @@
 
   .result-badge {
     display: inline-block;
-    background: rgba(208,169,0,0.15);
-    color: #D0A900;
-    border: 1px solid rgba(208,169,0,0.3);
+    background: rgba(192,153,51,0.12);
+    color: #C09933;
+    border: 1px solid rgba(192,153,51,0.3);
     border-radius: 20px;
     padding: 4px 14px;
     font-size: 12px;
@@ -234,21 +234,21 @@
   .result-title {
     font-size: 20px;
     font-weight: 700;
-    color: #f0ece4;
+    color: #F9F6EC;
     margin-bottom: 12px;
     font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   }
 
   .result-body {
     font-size: 15px;
-    color: #c8c0b0;
+    color: #c8b89a;
     line-height: 1.9;
     white-space: pre-wrap;
   }
 
   .result-divider {
     border: none;
-    border-top: 1px solid #222;
+    border-top: 1px solid #1e1608;
     margin: 16px 0;
   }
 
@@ -262,9 +262,9 @@
     flex: 1;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid #333;
-    background: #1a1a1a;
-    color: #aaa;
+    border: 1px solid #2a2010;
+    background: #111;
+    color: #a09070;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
@@ -272,8 +272,8 @@
   }
 
   .share-btn:hover {
-    border-color: #D0A900;
-    color: #D0A900;
+    border-color: #C09933;
+    color: #C09933;
   }
 
   .loading {
@@ -296,14 +296,14 @@
 
   .loading-text {
     margin-top: 16px;
-    color: #888;
+    color: #7a6a4a;
     font-size: 14px;
     line-height: 1.8;
   }
 
   .trial-bar {
-    background: #111;
-    border: 1px solid #222;
+    background: #0d0900;
+    border: 1px solid #2a2010;
     border-radius: 10px;
     padding: 12px 16px;
     margin-bottom: 16px;
@@ -311,14 +311,14 @@
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
-    color: #777;
+    color: #7a6a4a;
   }
 
-  .trial-count { color: #D0A900; font-weight: 700; }
+  .trial-count { color: #C09933; font-weight: 700; }
 
   .pro-bar {
-    background: linear-gradient(135deg, rgba(208,169,0,0.1), rgba(139,0,0,0.1));
-    border: 1px solid rgba(208,169,0,0.3);
+    background: linear-gradient(135deg, rgba(192,153,51,0.1), rgba(80,34,0,0.15));
+    border: 1px solid rgba(192,153,51,0.3);
     border-radius: 10px;
     padding: 12px 16px;
     margin-bottom: 16px;
@@ -326,14 +326,14 @@
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
-    color: #D0A900;
+    color: #C09933;
   }
 
   .pro-bar.visible { display: flex; }
 
   .paywall {
-    background: linear-gradient(135deg, #1a0a00, #0a0a1a);
-    border: 1px solid #333;
+    background: linear-gradient(135deg, #0d0800, #0a0500);
+    border: 1px solid #2a2010;
     border-radius: 16px;
     padding: 32px 24px;
     text-align: center;
@@ -343,14 +343,14 @@
   .paywall.visible { display: block; }
 
   .paywall-icon { font-size: 48px; margin-bottom: 16px; }
-  .paywall-title { font-size: 20px; color: #D0A900; font-weight: 700; margin-bottom: 12px; }
-  .paywall-text { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+  .paywall-title { font-size: 20px; color: #C09933; font-weight: 700; margin-bottom: 12px; }
+  .paywall-text { font-size: 14px; color: #8a7a5a; line-height: 1.7; margin-bottom: 20px; }
 
   .paywall-btn {
     display: block;
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #D0A900, #b8900a);
+    background: linear-gradient(135deg, #C09933, #a07820);
     color: #000;
     font-weight: 700;
     font-size: 16px;
@@ -364,7 +364,7 @@
 
   .paywall-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(208,169,0,0.3);
+    box-shadow: 0 8px 24px rgba(192,153,51,0.35);
   }
 
   .pw-divider {
@@ -376,12 +376,12 @@
 
   .pw-divider-line {
     flex: 1;
-    border-top: 1px solid #2a2a2a;
+    border-top: 1px solid #2a2010;
   }
 
   .pw-divider-text {
     font-size: 12px;
-    color: #444;
+    color: #4a3a20;
     white-space: nowrap;
   }
 
@@ -392,9 +392,9 @@
 
   .pw-input {
     flex: 1;
-    background: #1a1a1a;
-    border: 1.5px solid #333;
-    color: #f0ece4;
+    background: #111;
+    border: 1.5px solid #2a2010;
+    color: #F9F6EC;
     border-radius: 10px;
     padding: 12px 16px;
     font-size: 15px;
@@ -403,13 +403,13 @@
     transition: border-color 0.2s;
   }
 
-  .pw-input:focus { border-color: #D0A900; }
-  .pw-input::placeholder { color: #444; letter-spacing: 0.05em; }
+  .pw-input:focus { border-color: #C09933; }
+  .pw-input::placeholder { color: #3a2a10; letter-spacing: 0.05em; }
 
   .pw-submit {
-    background: #1a1a1a;
-    border: 1.5px solid #333;
-    color: #aaa;
+    background: #111;
+    border: 1.5px solid #2a2010;
+    color: #a09070;
     border-radius: 10px;
     padding: 12px 16px;
     font-size: 14px;
@@ -419,13 +419,13 @@
   }
 
   .pw-submit:hover {
-    border-color: #D0A900;
-    color: #D0A900;
+    border-color: #C09933;
+    color: #C09933;
   }
 
   .pw-error {
     font-size: 12px;
-    color: #ff6060;
+    color: #cc6040;
     margin-top: 8px;
     display: none;
   }
@@ -436,7 +436,7 @@
 
   .examples-title {
     font-size: 13px;
-    color: #666;
+    color: #4a3a20;
     text-align: center;
     margin-bottom: 12px;
     letter-spacing: 0.1em;
@@ -450,18 +450,18 @@
   }
 
   .chip {
-    background: #111;
-    border: 1px solid #2a2a2a;
-    color: #999;
+    background: #0d0900;
+    border: 1px solid #2a2010;
+    color: #8a7a5a;
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 12px;
   }
 
   .error-msg {
-    background: rgba(139,0,0,0.15);
-    border: 1px solid rgba(139,0,0,0.3);
-    color: #ff8080;
+    background: rgba(80,34,0,0.2);
+    border: 1px solid rgba(80,34,0,0.4);
+    color: #cc8060;
     padding: 14px;
     border-radius: 10px;
     font-size: 14px;
@@ -477,11 +477,11 @@
     text-align: center;
     padding: 24px 0 20px;
     font-size: 12px;
-    color: #444;
+    color: #3a2a10;
     letter-spacing: 0.1em;
   }
 
-  footer a { color: #D0A900; text-decoration: none; }
+  footer a { color: #C09933; text-decoration: none; }
   footer a:hover { opacity: 0.75; }
 
   @media (max-width: 400px) {
@@ -503,7 +503,7 @@
     <div class="title-en">WA-MIKKE</div>
     <div class="tagline">
       「これって何だろう？」を、文化の物語に。<br>
-      <span style="font-size:12px;color:#666;">Discover the hidden stories of Japan.</span>
+      <span style="font-size:12px;color:#4a3a20;">Discover the hidden stories of Japan.</span>
     </div>
   </div>
 
@@ -514,7 +514,7 @@
 
   <div class="pro-bar" id="proBar">
     <span>🔓 Pro版 無制限モード</span>
-    <span style="font-size:12px; color:#888;">パスワード認証済み</span>
+    <span style="font-size:12px; color:#7a6a4a;">パスワード認証済み</span>
   </div>
 
   <div class="lang-section">
@@ -536,7 +536,7 @@
     <div class="upload-icon">📷</div>
     <div class="upload-text">
       不思議なものを撮影・アップロード<br>
-      <span style="font-size:13px;color:#666;">Tap to take or upload a photo</span>
+      <span style="font-size:13px;color:#4a3a20;">Tap to take or upload a photo</span>
     </div>
     <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
   </div>
@@ -558,7 +558,7 @@
     <div class="torii">⛩️</div>
     <div class="loading-text">
       日本の歴史と文化の扉を開いています...<br>
-      <span style="font-size:12px;color:#555;">Exploring Japan's cultural history...</span>
+      <span style="font-size:12px;color:#3a2a10;">Exploring Japan's cultural history...</span>
     </div>
   </div>
 
@@ -581,7 +581,7 @@
     <div class="paywall-text">
       無料体験の3回が終了しました。<br>
       Pro版では無制限で日本文化の謎を解き明かせます。<br><br>
-      <span style="color:#D0A900; font-size:18px; font-weight:700;">¥1,980／月</span><br>
+      <span style="color:#C09933; font-size:18px; font-weight:700;">¥1,980／月</span><br>
       <span style="font-size:12px;">いつでも解約可能</span>
     </div>
     <a href="https://buy.stripe.com/bJeaEW5ey0AJcd9aN6cV20s" class="paywall-btn" target="_blank">
@@ -727,9 +727,9 @@ function checkPassword() {
     }
   } else {
     errEl.classList.add('visible');
-    document.getElementById('pwInput').style.borderColor = '#ff6060';
+    document.getElementById('pwInput').style.borderColor = '#cc6040';
     setTimeout(() => {
-      document.getElementById('pwInput').style.borderColor = '#333';
+      document.getElementById('pwInput').style.borderColor = '#2a2010';
     }, 2000);
   }
 }
@@ -843,7 +843,7 @@ function analyzeNew() {
   area.classList.remove('has-image');
   area.innerHTML = `
     <div class="upload-icon">📷</div>
-    <div class="upload-text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#666;">Tap to take or upload a photo</span></div>
+    <div class="upload-text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#4a3a20;">Tap to take or upload a photo</span></div>
     <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
   `;
   area.onclick = () => document.getElementById('fileInput').click();
