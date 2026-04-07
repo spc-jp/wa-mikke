@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ご購入ありがとうございます | 和みっけ</title>
+<title>和みっけ - Wa-mikke | 日本の不思議を解き明かす</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,11 +12,6 @@
     background: #0a0a0a;
     color: #f0ece4;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
     overflow-x: hidden;
   }
 
@@ -31,241 +26,593 @@
     z-index: 0;
   }
 
-  .card {
+  .container {
     position: relative;
     z-index: 1;
-    background: #111;
-    border: 1px solid #2a2a2a;
-    border-radius: 20px;
-    padding: 40px 28px;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
   }
 
-  .logo-mark { font-size: 48px; margin-bottom: 8px; }
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+  }
+
+  .logo-mark {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
 
   .title-ja {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
     color: #D0A900;
     letter-spacing: 0.15em;
     font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    transition: opacity 0.2s;
   }
+
+  .title-ja:hover { opacity: 0.75; }
 
   .title-en {
-    font-size: 13px;
-    color: #666;
+    font-size: 14px;
+    color: #8b8b8b;
     letter-spacing: 0.2em;
-    margin-bottom: 24px;
+    margin-top: 4px;
   }
 
-  .thanks-badge {
-    display: inline-block;
-    background: rgba(208,169,0,0.12);
-    color: #D0A900;
-    border: 1px solid rgba(208,169,0,0.3);
-    border-radius: 20px;
-    padding: 6px 18px;
+  .tagline {
+    margin-top: 12px;
     font-size: 13px;
-    margin-bottom: 20px;
-    letter-spacing: 0.08em;
-  }
-
-  .message {
-    font-size: 15px;
-    color: #c8c0b0;
-    line-height: 1.9;
-    margin-bottom: 28px;
-  }
-
-  .pw-section {
-    background: #0a0a0a;
-    border: 1px solid #333;
-    border-radius: 14px;
-    padding: 24px 20px;
-    margin-bottom: 28px;
-  }
-
-  .pw-label {
-    font-size: 12px;
-    color: #666;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .pw-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: #1a1a1a;
-    border: 1.5px solid #D0A900;
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-  }
-
-  .pw-text {
-    font-size: 26px;
-    font-weight: 700;
-    color: #D0A900;
-    letter-spacing: 0.2em;
-    font-family: monospace;
-  }
-
-  .copy-btn {
-    background: rgba(208,169,0,0.15);
-    border: 1px solid rgba(208,169,0,0.3);
-    color: #D0A900;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .copy-btn:hover { background: rgba(208,169,0,0.25); }
-
-  .pw-note {
-    font-size: 12px;
-    color: #555;
+    color: #c0b090;
     line-height: 1.6;
   }
 
-  .qr-section { margin-bottom: 28px; }
+  .lang-section { margin-bottom: 20px; }
 
-  .qr-label {
+  .section-label {
     font-size: 12px;
-    color: #666;
+    color: #888;
     letter-spacing: 0.1em;
+    margin-bottom: 8px;
     text-transform: uppercase;
-    margin-bottom: 14px;
   }
 
-  .qr-frame {
-    display: inline-block;
-    background: #fff;
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 10px;
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 
-  .qr-frame img {
-    width: 160px;
-    height: 160px;
+  .lang-btn {
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #ccc;
+    padding: 10px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .lang-btn:hover, .lang-btn.active {
+    border-color: #D0A900;
+    color: #D0A900;
+    background: rgba(208,169,0,0.08);
+  }
+
+  .upload-area {
+    border: 2px dashed #333;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.02);
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .upload-area:hover {
+    border-color: #8b0000;
+    background: rgba(139,0,0,0.05);
+  }
+
+  .upload-area.has-image {
+    border-color: #D0A900;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+
+  .upload-text {
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  .upload-hint {
+    font-size: 12px;
+    color: #555;
+    margin-top: 8px;
+  }
+
+  .preview-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
     display: block;
+    border-radius: 14px;
   }
 
-  .qr-url { font-size: 13px; color: #888; }
-  .qr-url a { color: #D0A900; text-decoration: none; }
-  .qr-url a:hover { opacity: 0.75; }
+  .change-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #D0A900;
+    border: 1px solid #D0A900;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
 
-  .app-btn {
+  input[type="file"] { display: none; }
+
+  .camera-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #aaa;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
+  }
+
+  .camera-btn:hover {
+    border-color: #8b0000;
+    color: #f0ece4;
+  }
+
+  .analyze-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #8b0000, #c0392b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    margin-bottom: 16px;
+  }
+
+  .analyze-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139,0,0,0.4);
+  }
+
+  .analyze-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .result-card {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+    display: none;
+  }
+
+  .result-card.visible { display: block; }
+
+  .result-badge {
+    display: inline-block;
+    background: rgba(208,169,0,0.15);
+    color: #D0A900;
+    border: 1px solid rgba(208,169,0,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+  }
+
+  .result-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0ece4;
+    margin-bottom: 12px;
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  .result-body {
+    font-size: 15px;
+    color: #c8c0b0;
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .result-divider {
+    border: none;
+    border-top: 1px solid #222;
+    margin: 16px 0;
+  }
+
+  .share-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .share-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #aaa;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .share-btn:hover {
+    border-color: #D0A900;
+    color: #D0A900;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+
+  .loading.visible { display: block; }
+
+  .torii {
+    font-size: 48px;
+    animation: float 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .loading-text {
+    margin-top: 16px;
+    color: #888;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .trial-bar {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #777;
+  }
+
+  .trial-count { color: #D0A900; font-weight: 700; }
+
+  .pro-bar {
+    background: linear-gradient(135deg, rgba(208,169,0,0.1), rgba(139,0,0,0.1));
+    border: 1px solid rgba(208,169,0,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #D0A900;
+  }
+
+  .pro-bar.visible { display: flex; }
+
+  .paywall {
+    background: linear-gradient(135deg, #1a0a00, #0a0a1a);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    display: none;
+  }
+
+  .paywall.visible { display: block; }
+
+  .paywall-icon { font-size: 48px; margin-bottom: 16px; }
+  .paywall-title { font-size: 20px; color: #D0A900; font-weight: 700; margin-bottom: 12px; }
+  .paywall-text { font-size: 14px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+
+  .paywall-btn {
     display: block;
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #8b0000, #c0392b);
-    color: #fff;
+    background: linear-gradient(135deg, #D0A900, #b8900a);
+    color: #000;
     font-weight: 700;
     font-size: 16px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: all 0.3s;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    transition: all 0.2s;
   }
 
-  .app-btn:hover {
+  .paywall-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(139,0,0,0.4);
+    box-shadow: 0 8px 24px rgba(208,169,0,0.3);
   }
 
-  .divider {
-    border: none;
-    border-top: 1px solid #1e1e1e;
-    margin: 24px 0;
+  .pw-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
   }
 
-  .steps {
-    text-align: left;
+  .pw-divider-line {
+    flex: 1;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .pw-divider-text {
+    font-size: 12px;
+    color: #444;
+    white-space: nowrap;
+  }
+
+  .pw-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .pw-input {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #f0ece4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .pw-input:focus { border-color: #D0A900; }
+  .pw-input::placeholder { color: #444; letter-spacing: 0.05em; }
+
+  .pw-submit {
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #aaa;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .pw-submit:hover {
+    border-color: #D0A900;
+    color: #D0A900;
+  }
+
+  .pw-error {
+    font-size: 12px;
+    color: #ff6060;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .pw-error.visible { display: block; }
+
+  .examples { margin-top: 28px; }
+
+  .examples-title {
     font-size: 13px;
-    color: #888;
-    line-height: 2;
+    color: #666;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
   }
 
-  .steps li { list-style: none; padding-left: 4px; }
+  .example-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .chip {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: #999;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  .error-msg {
+    background: rgba(139,0,0,0.15);
+    border: 1px solid rgba(139,0,0,0.3);
+    color: #ff8080;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
 
   footer {
     position: relative;
     z-index: 1;
-    margin-top: 24px;
+    text-align: center;
+    padding: 24px 0 20px;
     font-size: 12px;
-    color: #333;
+    color: #444;
     letter-spacing: 0.1em;
   }
 
-  footer a { color: #555; text-decoration: none; }
-  footer a:hover { color: #D0A900; }
+  footer a { color: #D0A900; text-decoration: none; }
+  footer a:hover { opacity: 0.75; }
+
+  @media (max-width: 400px) {
+    .lang-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
 
 <div class="bg-pattern"></div>
 
-<div class="card">
+<div class="container">
 
-  <div class="logo-mark">⛩️</div>
-  <div class="title-ja">和みっけ</div>
-  <div class="title-en">WA-MIKKE</div>
-
-  <div class="thanks-badge">🎌 ご購入ありがとうございます</div>
-
-  <div class="message">
-    日本の文化の扉が、あなたのために開きました。<br>
-    以下のパスワードをアプリに入力して、<br>
-    無制限でお楽しみください。
-  </div>
-
-  <div class="pw-section">
-    <div class="pw-label">🔑 Your Password / パスワード</div>
-    <div class="pw-box">
-      <div class="pw-text" id="pwText">wa2025</div>
-      <button class="copy-btn" onclick="copyPW()">📋 コピー</button>
-    </div>
-    <div class="pw-note">
-      このパスワードは大切に保管してください。<br>
-      Please keep this password safe.
+  <div class="header">
+    <div class="logo-mark">⛩️</div>
+    <a href="#" onclick="resetApp(); return false;" style="text-decoration:none;">
+      <div class="title-ja">和みっけ</div>
+    </a>
+    <div class="title-en">WA-MIKKE</div>
+    <div class="tagline">
+      「これって何だろう？」を、文化の物語に。<br>
+      <span style="font-size:12px;color:#666;">Discover the hidden stories of Japan.</span>
     </div>
   </div>
 
-  <div class="qr-section">
-    <div class="qr-label">📱 アプリを開く / Open App</div>
-    <div class="qr-frame">
-      <img src="QR_wa-mikke.png" alt="和みっけ QRコード">
-    </div>
-    <div class="qr-url">
-      <a href="https://wa-mikke.pages.dev/" target="_blank">https://wa-mikke.pages.dev/</a>
+  <div class="trial-bar" id="trialBar">
+    <span>🎌 無料体験</span>
+    <span>あと <span class="trial-count" id="trialCount">3</span> 回使えます</span>
+  </div>
+
+  <div class="pro-bar" id="proBar">
+    <span>🔓 Pro版 無制限モード</span>
+    <span style="font-size:12px; color:#888;">パスワード認証済み</span>
+  </div>
+
+  <div class="lang-section">
+    <div class="section-label">🌏 Your Language / 説明する言語</div>
+    <div class="lang-grid">
+      <button class="lang-btn active" data-lang="en" onclick="selectLang(this)">🇺🇸 English</button>
+      <button class="lang-btn" data-lang="zh" onclick="selectLang(this)">🇨🇳 中文</button>
+      <button class="lang-btn" data-lang="ko" onclick="selectLang(this)">🇰🇷 한국어</button>
+      <button class="lang-btn" data-lang="fr" onclick="selectLang(this)">🇫🇷 Français</button>
+      <button class="lang-btn" data-lang="de" onclick="selectLang(this)">🇩🇪 Deutsch</button>
+      <button class="lang-btn" data-lang="es" onclick="selectLang(this)">🇪🇸 Español</button>
+      <button class="lang-btn" data-lang="pt" onclick="selectLang(this)">🇵🇹 Português</button>
+      <button class="lang-btn" data-lang="th" onclick="selectLang(this)">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn" data-lang="ja" onclick="selectLang(this)">🇯🇵 日本語</button>
     </div>
   </div>
 
-  <a href="https://wa-mikke.pages.dev/" target="_blank" class="app-btn">
-    ⛩️ 和みっけを開く
-  </a>
+  <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">
+      不思議なものを撮影・アップロード<br>
+      <span style="font-size:13px;color:#666;">Tap to take or upload a photo</span>
+    </div>
+    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+  </div>
 
-  <hr class="divider">
+  <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
 
-  <ul class="steps">
-    <li>① アプリを開く</li>
-    <li>② 言語を選ぶ（9言語対応）</li>
-    <li>③ 不思議なものを写真に撮る</li>
-    <li>④「日本の文化を解き明かす」をタップ</li>
-    <li>⑤ パスワードを入力して無制限モードへ</li>
-  </ul>
+  <button class="camera-btn" onclick="openCamera()">
+    📸 カメラで直接撮影する（スマホ向け）
+  </button>
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
+
+  <button class="analyze-btn" id="analyzeBtn" disabled onclick="analyze()">
+    ⛩️ 日本の文化を解き明かす
+  </button>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="loading" id="loading">
+    <div class="torii">⛩️</div>
+    <div class="loading-text">
+      日本の歴史と文化の扉を開いています...<br>
+      <span style="font-size:12px;color:#555;">Exploring Japan's cultural history...</span>
+    </div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-badge">🎌 CULTURAL DISCOVERY</div>
+    <div class="result-title" id="resultTitle"></div>
+    <hr class="result-divider">
+    <div class="result-body" id="resultBody"></div>
+    <hr class="result-divider">
+    <div class="share-row">
+      <button class="share-btn" onclick="copyResult()">📋 コピー</button>
+      <button class="share-btn" onclick="shareX()">𝕏 でシェア</button>
+      <button class="share-btn" onclick="analyzeNew()">🔄 別の写真</button>
+    </div>
+  </div>
+
+  <div class="paywall" id="paywall">
+    <div class="paywall-icon">🏮</div>
+    <div class="paywall-title">もっと日本を知りたいですか？</div>
+    <div class="paywall-text">
+      無料体験の3回が終了しました。<br>
+      Pro版では無制限で日本文化の謎を解き明かせます。<br><br>
+      <span style="color:#D0A900; font-size:18px; font-weight:700;">¥1,980／月</span><br>
+      <span style="font-size:12px;">いつでも解約可能</span>
+    </div>
+    <a href="https://buy.stripe.com/bJeaEW5ey0AJcd9aN6cV20s" class="paywall-btn" target="_blank">
+      🎌 Pro版に申し込む — ¥1,980/月
+    </a>
+    <div class="pw-divider">
+      <div class="pw-divider-line"></div>
+      <div class="pw-divider-text">購入済みの方はこちら</div>
+      <div class="pw-divider-line"></div>
+    </div>
+    <div class="pw-input-row">
+      <input type="password" class="pw-input" id="pwInput" placeholder="パスワードを入力 / Enter password">
+      <button class="pw-submit" onclick="checkPassword()">🔓 解除</button>
+    </div>
+    <div class="pw-error" id="pwError">パスワードが違います / Incorrect password</div>
+  </div>
+
+  <div class="examples">
+    <div class="examples-title">こんなものを撮ってみてください 📸</div>
+    <div class="example-chips">
+      <div class="chip">🦝 タヌキの置物</div>
+      <div class="chip">🍽️ 居酒屋のお通し</div>
+      <div class="chip">🚿 手水舎</div>
+      <div class="chip">🎋 絵馬</div>
+      <div class="chip">🪅 招き猫</div>
+      <div class="chip">⛩️ 注連縄</div>
+      <div class="chip">🏮 赤い提灯</div>
+      <div class="chip">🎏 鯉のぼり</div>
+      <div class="chip">🗿 地蔵様</div>
+    </div>
+  </div>
 
 </div>
 
@@ -274,13 +621,252 @@
 </footer>
 
 <script>
-function copyPW() {
-  navigator.clipboard.writeText('wa2025').then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.textContent = '✅ コピー済';
-    setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);
-  });
+const WORKER_URL = 'https://wa-mikke.yymmatsu.workers.dev';
+const FREE_LIMIT = 3;
+const STORAGE_KEY = 'wamikke_uses';
+const PRO_KEY = 'wamikke_pro';
+const PASSWORD = 'wa2025';
+
+let selectedLang = 'en';
+let imageBase64 = null;
+let imageMime = 'image/jpeg';
+
+function init() {
+  updateTrialBar();
+  if (isPro()) showProMode();
 }
+
+function isPro() {
+  return localStorage.getItem(PRO_KEY) === 'true';
+}
+
+function showProMode() {
+  document.getElementById('trialBar').style.display = 'none';
+  document.getElementById('proBar').classList.add('visible');
+  hide('paywall');
+}
+
+function selectLang(btn) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedLang = btn.dataset.lang;
+}
+
+function handleFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX = 1280;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      imageBase64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+      imageMime = 'image/jpeg';
+
+      const area = document.getElementById('uploadArea');
+      area.classList.add('has-image');
+      area.innerHTML = `
+        <img src="${canvas.toDataURL('image/jpeg', 0.85)}" class="preview-img">
+        <button class="change-btn" onclick="changeImage(event)">✏️ 変更</button>
+      `;
+      document.getElementById('analyzeBtn').disabled = false;
+      hide('resultCard'); hide('errorMsg');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function openCamera() {
+  document.getElementById('cameraInput').click();
+}
+
+function changeImage(e) {
+  e.stopPropagation();
+  document.getElementById('fileInput').click();
+}
+
+function getUses() {
+  return parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+}
+
+function incrementUses() {
+  const n = getUses() + 1;
+  localStorage.setItem(STORAGE_KEY, n);
+  return n;
+}
+
+function updateTrialBar() {
+  if (isPro()) return;
+  const remaining = Math.max(0, FREE_LIMIT - getUses());
+  document.getElementById('trialCount').textContent = remaining;
+}
+
+function checkPassword() {
+  const input = document.getElementById('pwInput').value.trim();
+  const errEl = document.getElementById('pwError');
+  if (input === PASSWORD) {
+    localStorage.setItem(PRO_KEY, 'true');
+    errEl.classList.remove('visible');
+    showProMode();
+    if (imageBase64) {
+      hide('paywall');
+      analyze();
+    } else {
+      hide('paywall');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else {
+    errEl.classList.add('visible');
+    document.getElementById('pwInput').style.borderColor = '#ff6060';
+    setTimeout(() => {
+      document.getElementById('pwInput').style.borderColor = '#333';
+    }, 2000);
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('paywall').classList.contains('visible')) {
+    checkPassword();
+  }
+});
+
+async function analyze() {
+  if (!imageBase64) return;
+
+  if (!isPro()) {
+    const uses = getUses();
+    if (uses >= FREE_LIMIT) {
+      show('paywall');
+      return;
+    }
+  }
+
+  show('loading');
+  hide('resultCard'); hide('errorMsg'); hide('paywall');
+  document.getElementById('analyzeBtn').disabled = true;
+
+  const langNames = {
+    en: 'English', zh: 'Chinese (Simplified)', ko: 'Korean',
+    fr: 'French', de: 'German', es: 'Spanish',
+    pt: 'Portuguese', th: 'Thai', ja: 'Japanese'
+  };
+
+  const systemPrompt = `You are a warm, knowledgeable cultural guide specializing in Japanese culture, history, and daily life. When someone shows you a photo of something from Japan, you identify it and provide a rich, engaging cultural explanation. Always respond in ${langNames[selectedLang]}.
+
+Structure your response exactly like this:
+[NAME]: The name of the item/thing (in ${langNames[selectedLang]} and Japanese if different)
+[STORY]: A warm, engaging cultural explanation (3-5 paragraphs). Cover: what it is, its historical origin, cultural significance, and why Japanese people use/have it. Include surprising or lesser-known facts. Write like a friendly local sharing a secret, not like a textbook.
+[TIP]: One practical tip for the visitor (e.g., how to interact with it, what to say, or related experiences to seek out).
+
+If you cannot identify the content as something from Japan, kindly ask them to try another photo of something they found interesting in Japan.`;
+
+  const userPrompt = `I found this in Japan and I'm curious what it is and what it means culturally. Please explain it to me in ${langNames[selectedLang]}.`;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1200,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageBase64 } },
+            { type: 'text', text: userPrompt }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API Error: ${response.status}`);
+    const data = await response.json();
+    const text = data.content[0].text;
+
+    const nameMatch = text.match(/\[NAME\]:\s*(.+)/);
+    const storyMatch = text.match(/\[STORY\]:\s*([\s\S]+?)(?=\[TIP\]|$)/);
+    const tipMatch = text.match(/\[TIP\]:\s*([\s\S]+)/);
+
+    const title = nameMatch ? nameMatch[1].trim() : '発見！';
+    const body = (storyMatch ? storyMatch[1].trim() : text)
+      + (tipMatch ? '\n\n💡 ' + tipMatch[1].trim() : '');
+
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultBody').textContent = body;
+
+    show('resultCard');
+
+    if (!isPro()) {
+      incrementUses();
+      updateTrialBar();
+      const remaining = FREE_LIMIT - getUses();
+      if (remaining <= 0) {
+        setTimeout(() => show('paywall'), 1500);
+      }
+    }
+
+  } catch(err) {
+    showError('解析中にエラーが発生しました。もう一度お試しください。\n' + err.message);
+  } finally {
+    hide('loading');
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+function copyResult() {
+  const title = document.getElementById('resultTitle').textContent;
+  const body = document.getElementById('resultBody').textContent;
+  navigator.clipboard.writeText(`${title}\n\n${body}\n\n#和みっけ #WaMikke #Japan`);
+  alert('コピーしました！');
+}
+
+function shareX() {
+  const title = document.getElementById('resultTitle').textContent;
+  const text = encodeURIComponent(`${title} を和みっけで発見！🎌 #WaMikke #VisitJapan`);
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function analyzeNew() {
+  imageBase64 = null;
+  const area = document.getElementById('uploadArea');
+  area.classList.remove('has-image');
+  area.innerHTML = `
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#666;">Tap to take or upload a photo</span></div>
+    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+  `;
+  area.onclick = () => document.getElementById('fileInput').click();
+  document.getElementById('analyzeBtn').disabled = true;
+  hide('resultCard'); hide('errorMsg');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetApp() {
+  analyzeNew();
+  hide('paywall');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function show(id) { document.getElementById(id).classList.add('visible'); }
+function hide(id) { document.getElementById(id).classList.remove('visible'); }
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+
+init();
 </script>
 
 </body>
