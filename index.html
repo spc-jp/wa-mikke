@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>和みっけ - Wa-mikke | 日本の不思議を解き明かす</title>
+
+<!-- Favicon -->
+<link rel="icon" href="https://spc-jp.github.io/wa-mikke/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://spc-jp.github.io/wa-mikke/favicon.png">
+
+<!-- OGP & Twitter Card Settings -->
+<meta property="og:title" content="和みっけ - Wa-mikke | 日本の不思議を解き明かす">
+<meta property="og:description" content="「これって何だろう？」を、文化の物語に。日本の不思議を解き明かすAIガイドアプリです。">
+<meta property="og:image" content="https://spc-jp.github.io/wa-mikke/ogp.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="和みっけ - Wa-mikke">
+<meta name="twitter:description" content="「これって何だろう？」を、文化の物語に。日本の不思議を解き明かすAIガイドアプリです。">
+<meta name="twitter:image" content="https://spc-jp.github.io/wa-mikke/ogp.png">
+
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -506,26 +521,27 @@
       <div class="title-ja">和みっけ</div>
     </a>
     <div class="title-en">WA-MIKKE</div>
-    <div class="tagline">
+    <div class="tagline" data-i18n="tagline">
       「これって何だろう？」を、文化の物語に。<br>
       <span style="font-size:12px;color:#c0a0b0;">Discover the hidden stories of Japan.</span>
     </div>
   </div>
 
   <div class="trial-bar" id="trialBar">
-    <span>🌸 無料体験</span>
-    <span>あと <span class="trial-count" id="trialCount">3</span> 回使えます</span>
+    <span data-i18n="trial_text">🌸 無料体験</span>
+    <span><span data-i18n="trial_pre">あと </span><span class="trial-count" id="trialCount">3</span><span data-i18n="trial_post"> 回使えます</span></span>
   </div>
 
   <div class="pro-bar" id="proBar">
-    <span>🔓 Pro版 無制限モード</span>
-    <span style="font-size:12px; color:#c0a0b0;">パスワード認証済み</span>
+    <span data-i18n="pro_text">🔓 Pro版 無制限モード</span>
+    <span style="font-size:12px; color:#c0a0b0;" data-i18n="pro_sub">パスワード認証済み</span>
   </div>
 
   <div class="lang-section">
     <div class="section-label">🌏 Your Language / 説明する言語</div>
     <div class="lang-grid">
-      <button class="lang-btn active" data-lang="en" onclick="selectLang(this)">🇺🇸 English</button>
+      <!-- 英語の active クラスを外し、日本語ボタンに付与しました -->
+      <button class="lang-btn" data-lang="en" onclick="selectLang(this)">🇺🇸 English</button>
       <button class="lang-btn" data-lang="zh" onclick="selectLang(this)">🇨🇳 中文</button>
       <button class="lang-btn" data-lang="ko" onclick="selectLang(this)">🇰🇷 한국어</button>
       <button class="lang-btn" data-lang="fr" onclick="selectLang(this)">🇫🇷 Français</button>
@@ -533,27 +549,27 @@
       <button class="lang-btn" data-lang="es" onclick="selectLang(this)">🇪🇸 Español</button>
       <button class="lang-btn" data-lang="pt" onclick="selectLang(this)">🇵🇹 Português</button>
       <button class="lang-btn" data-lang="th" onclick="selectLang(this)">🇹🇭 ภาษาไทย</button>
-      <button class="lang-btn" data-lang="ja" onclick="selectLang(this)">🇯🇵 日本語</button>
+      <button class="lang-btn active" data-lang="ja" onclick="selectLang(this)">🇯🇵 日本語</button>
     </div>
   </div>
 
   <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
     <div class="upload-icon">📷</div>
-    <div class="upload-text">
+    <div class="upload-text" data-i18n="upload_text">
       不思議なものを撮影・アップロード<br>
       <span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span>
     </div>
-    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+    <div class="upload-hint" data-i18n="upload_hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
   </div>
 
   <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
 
-  <button class="camera-btn" onclick="openCamera()">
+  <button class="camera-btn" onclick="openCamera()" data-i18n="camera_btn">
     📸 カメラで直接撮影する（スマホ向け）
   </button>
   <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
 
-  <button class="analyze-btn" id="analyzeBtn" disabled onclick="analyze()">
+  <button class="analyze-btn" id="analyzeBtn" disabled onclick="analyze()" data-i18n="analyze_btn">
     🌸 日本の文化を解き明かす
   </button>
 
@@ -561,51 +577,51 @@
 
   <div class="loading" id="loading">
     <div class="torii">🌸</div>
-    <div class="loading-text">
+    <div class="loading-text" data-i18n="loading_text">
       日本の歴史と文化の扉を開いています...<br>
       <span style="font-size:12px;color:#c0a0b0;">Exploring Japan's cultural history...</span>
     </div>
   </div>
 
   <div class="result-card" id="resultCard">
-    <div class="result-badge">🌸 CULTURAL DISCOVERY</div>
+    <div class="result-badge" data-i18n="result_badge">🌸 CULTURAL DISCOVERY</div>
     <div class="result-title" id="resultTitle"></div>
     <hr class="result-divider">
     <div class="result-body" id="resultBody"></div>
     <hr class="result-divider">
     <div class="share-row">
-      <button class="share-btn" onclick="copyResult()">📋 コピー</button>
-      <button class="share-btn" onclick="shareX()">𝕏 でシェア</button>
-      <button class="share-btn" onclick="analyzeNew()">🔄 別の写真</button>
+      <button class="share-btn" onclick="copyResult()" data-i18n="btn_copy">📋 コピー</button>
+      <button class="share-btn" onclick="shareX()" data-i18n="btn_share">𝕏 でシェア</button>
+      <button class="share-btn" onclick="analyzeNew()" data-i18n="btn_new">🔄 別の写真</button>
     </div>
   </div>
 
   <div class="paywall" id="paywall">
     <div class="paywall-icon">🌸</div>
-    <div class="paywall-title">もっと日本を知りたいですか？</div>
-    <div class="paywall-text">
+    <div class="paywall-title" data-i18n="pw_title">もっと日本を知りたいですか？</div>
+    <div class="paywall-text" data-i18n="pw_text">
       無料体験の3回が終了しました。<br>
       Pro版では無制限で日本文化の謎を解き明かせます。<br><br>
       <span style="color:#F07799; font-size:18px; font-weight:700;">¥1,980／月</span><br>
       <span style="font-size:12px; color:#c0a0b0;">いつでも解約可能</span>
     </div>
-    <a href="https://buy.stripe.com/bJeaEW5ey0AJcd9aN6cV20s" class="paywall-btn" target="_blank">
+    <a href="https://buy.stripe.com/bJeaEW5ey0AJcd9aN6cV20s" class="paywall-btn" target="_blank" data-i18n="pw_btn">
       🌸 Pro版に申し込む — ¥1,980/月
     </a>
     <div class="pw-divider">
       <div class="pw-divider-line"></div>
-      <div class="pw-divider-text">購入済みの方はこちら</div>
+      <div class="pw-divider-text" data-i18n="pw_divider">購入済みの方はこちら</div>
       <div class="pw-divider-line"></div>
     </div>
     <div class="pw-input-row">
-      <input type="password" class="pw-input" id="pwInput" placeholder="パスワードを入力 / Enter password">
-      <button class="pw-submit" onclick="checkPassword()">🔓 解除</button>
+      <input type="password" class="pw-input" id="pwInput" data-i18n-placeholder="pw_placeholder" placeholder="パスワードを入力 / Enter password">
+      <button class="pw-submit" onclick="checkPassword()" data-i18n="pw_submit">🔓 解除</button>
     </div>
-    <div class="pw-error" id="pwError">パスワードが違います / Incorrect password</div>
+    <div class="pw-error" id="pwError" data-i18n="pw_error">パスワードが違います / Incorrect password</div>
   </div>
 
   <div class="examples">
-    <div class="examples-title">こんなものを撮ってみてください 📸</div>
+    <div class="examples-title" data-i18n="examples_title">こんなものを撮ってみてください 📸</div>
     <div class="example-chips">
       <div class="chip">🦝 タヌキの置物</div>
       <div class="chip">🍽️ 居酒屋のお通し</div>
@@ -626,19 +642,155 @@
 </footer>
 
 <script>
+// ==== UI Translation Dictionary ====
+const translations = {
+  ja: {
+    tagline: '「これって何だろう？」を、文化の物語に。<br><span style="font-size:12px;color:#c0a0b0;">Discover the hidden stories of Japan.</span>',
+    trial_text: '🌸 無料体験',
+    trial_pre: 'あと ',
+    trial_post: ' 回使えます',
+    pro_text: '🔓 Pro版 無制限モード',
+    pro_sub: 'パスワード認証済み',
+    upload_text: '不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span>',
+    upload_hint: '居酒屋・神社・街中で見かけた「？」を写してください',
+    camera_btn: '📸 カメラで直接撮影する（スマホ向け）',
+    analyze_btn: '🌸 日本の文化を解き明かす',
+    loading_text: '日本の歴史と文化の扉を開いています...<br><span style="font-size:12px;color:#c0a0b0;">Exploring Japan\'s cultural history...</span>',
+    result_badge: '🌸 文化の発見',
+    btn_copy: '📋 コピー',
+    btn_share: '𝕏 でシェア',
+    btn_new: '🔄 別の写真',
+    btn_change: '✏️ 変更',
+    examples_title: 'こんなものを撮ってみてください 📸',
+    pw_title: 'もっと日本を知りたいですか？',
+    pw_text: '無料体験の3回が終了しました。<br>Pro版では無制限で日本文化の謎を解き明かせます。<br><br><span style="color:#F07799; font-size:18px; font-weight:700;">¥1,980／月</span><br><span style="font-size:12px; color:#c0a0b0;">いつでも解約可能</span>',
+    pw_btn: '🌸 Pro版に申し込む — ¥1,980/月',
+    pw_divider: '購入済みの方はこちら',
+    pw_placeholder: 'パスワードを入力 / Enter password',
+    pw_submit: '🔓 解除',
+    pw_error: 'パスワードが違います',
+    toast_copied: 'コピーしました！',
+    share_text: 'を和みっけで発見！🌸 #WaMikke #VisitJapan'
+  },
+  en: {
+    tagline: 'Turn "What is this?" into a cultural story.<br><span style="font-size:12px;color:#c0a0b0;">日本の不思議を解き明かす</span>',
+    trial_text: '🌸 Free Trial',
+    trial_pre: '',
+    trial_post: ' uses left',
+    pro_text: '🔓 Pro Unlimited Mode',
+    pro_sub: 'Password authenticated',
+    upload_text: 'Tap to take or upload a photo<br><span style="font-size:13px;color:#c0a0b0;">不思議なものを撮影・アップロード</span>',
+    upload_hint: 'Snap a "?" you found at an izakaya, shrine, or on the street',
+    camera_btn: '📸 Take a photo directly (Mobile)',
+    analyze_btn: '🌸 Discover Japanese Culture',
+    loading_text: 'Unlocking the doors of Japanese history...<br><span style="font-size:12px;color:#c0a0b0;">歴史と文化を読み解いています...</span>',
+    result_badge: '🌸 CULTURAL DISCOVERY',
+    btn_copy: '📋 Copy',
+    btn_share: 'Share on 𝕏',
+    btn_new: '🔄 New Photo',
+    btn_change: '✏️ Change',
+    examples_title: 'Try taking photos of these 📸',
+    pw_title: 'Want to discover more of Japan?',
+    pw_text: 'Your 3 free trials have ended.<br>Unlock unlimited cultural discoveries with the Pro version.<br><br><span style="color:#F07799; font-size:18px; font-weight:700;">¥1,980/month</span><br><span style="font-size:12px; color:#c0a0b0;">Cancel anytime</span>',
+    pw_btn: '🌸 Get Pro — ¥1,980/mo',
+    pw_divider: 'Already purchased?',
+    pw_placeholder: 'Enter password',
+    pw_submit: '🔓 Unlock',
+    pw_error: 'Incorrect password',
+    toast_copied: 'Copied to clipboard!',
+    share_text: 'discovered on Wa-mikke! 🌸 #WaMikke #VisitJapan'
+  },
+  zh: {
+    tagline: '将“这是什么？”变成文化故事。<br><span style="font-size:12px;color:#c0a0b0;">Discover the hidden stories of Japan.</span>',
+    trial_text: '🌸 免费试用',
+    trial_pre: '剩余 ',
+    trial_post: ' 次',
+    pro_text: '🔓 Pro 无限制模式',
+    pro_sub: '已通过密码验证',
+    upload_text: '点击拍照或上传照片<br><span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span>',
+    upload_hint: '拍下你在居酒屋、神社或街头看到的“？”',
+    camera_btn: '📸 直接拍照（适用于手机）',
+    analyze_btn: '🌸 探索日本文化',
+    loading_text: '正在开启日本历史与文化之门...<br><span style="font-size:12px;color:#c0a0b0;">Exploring Japan\'s cultural history...</span>',
+    result_badge: '🌸 文化发现',
+    btn_copy: '📋 复制',
+    btn_share: '分享至 𝕏',
+    btn_new: '🔄 换一张',
+    btn_change: '✏️ 更改',
+    examples_title: '试着拍拍这些 📸',
+    pw_title: '想了解更多日本文化吗？',
+    pw_text: '3次免费试用已结束。<br>升级Pro版，无限制探索日本文化奥秘。<br><br><span style="color:#F07799; font-size:18px; font-weight:700;">¥1,980/月</span><br><span style="font-size:12px; color:#c0a0b0;">随时取消</span>',
+    pw_btn: '🌸 升级 Pro — ¥1,980/月',
+    pw_divider: '已购买？请在此验证',
+    pw_placeholder: '输入密码 / Enter password',
+    pw_submit: '🔓 解锁',
+    pw_error: '密码错误',
+    toast_copied: '已复制！',
+    share_text: '在 Wa-mikke 上发现！🌸 #WaMikke #VisitJapan'
+  },
+  ko: {
+    tagline: '"이게 뭐지?"를 문화 이야기로.<br><span style="font-size:12px;color:#c0a0b0;">Discover the hidden stories of Japan.</span>',
+    trial_text: '🌸 무료 체험',
+    trial_pre: '앞으로 ',
+    trial_post: '번 남았습니다',
+    pro_text: '🔓 Pro 무제한 모드',
+    pro_sub: '비밀번호 인증 완료',
+    upload_text: '사진을 찍거나 업로드하려면 탭하세요<br><span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span>',
+    upload_hint: '이자카야, 신사, 길거리에서 발견한 "?"를 찍어보세요',
+    camera_btn: '📸 직접 사진 찍기 (모바일용)',
+    analyze_btn: '🌸 일본 문화 알아보기',
+    loading_text: '일본 역사와 문화의 문을 여는 중...<br><span style="font-size:12px;color:#c0a0b0;">Exploring Japan\'s cultural history...</span>',
+    result_badge: '🌸 문화 발견',
+    btn_copy: '📋 복사',
+    btn_share: '𝕏에 공유',
+    btn_new: '🔄 다른 사진',
+    btn_change: '✏️ 변경',
+    examples_title: '이런 걸 찍어보세요 📸',
+    pw_title: '일본에 대해 더 알고 싶으신가요?',
+    pw_text: '무료 체험 3회가 종료되었습니다.<br>Pro 버전으로 무제한 일본 문화를 탐험하세요.<br><br><span style="color:#F07799; font-size:18px; font-weight:700;">¥1,980/월</span><br><span style="font-size:12px; color:#c0a0b0;">언제든 해지 가능</span>',
+    pw_btn: '🌸 Pro 구독하기 — ¥1,980/월',
+    pw_divider: '이미 구매하셨나요?',
+    pw_placeholder: '비밀번호 입력 / Enter password',
+    pw_submit: '🔓 잠금 해제',
+    pw_error: '비밀번호가 틀렸습니다',
+    toast_copied: '복사되었습니다!',
+    share_text: 'Wa-mikke에서 발견! 🌸 #WaMikke #VisitJapan'
+  }
+};
+
+// ===================================
+
 const WORKER_URL = 'https://wa-mikke.yymmatsu.workers.dev';
 const FREE_LIMIT = 3;
 const STORAGE_KEY = 'wamikke_uses';
 const PRO_KEY = 'wamikke_pro';
 const PASSWORD = 'wa2025';
 
-let selectedLang = 'en';
+// 初期言語を日本語(ja)に設定
+let selectedLang = 'ja';
 let imageBase64 = null;
 let imageMime = 'image/jpeg';
 
 function init() {
+  applyTranslations(selectedLang);
   updateTrialBar();
   if (isPro()) showProMode();
+}
+
+// Function to update UI texts dynamically based on selected language
+function applyTranslations(lang) {
+  // Use selected language, or default to English if not defined (for fr, de, es, pt, th)
+  const t = translations[lang] || translations['en'];
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key];
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
 }
 
 function isPro() {
@@ -655,6 +807,7 @@ function selectLang(btn) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   selectedLang = btn.dataset.lang;
+  applyTranslations(selectedLang); // Update UI language instantly
 }
 
 function handleFile(event) {
@@ -681,8 +834,10 @@ function handleFile(event) {
       area.classList.add('has-image');
       area.innerHTML = `
         <img src="${canvas.toDataURL('image/jpeg', 0.85)}" class="preview-img">
-        <button class="change-btn" onclick="changeImage(event)">✏️ 変更</button>
+        <button class="change-btn" onclick="changeImage(event)" data-i18n="btn_change">✏️ 変更</button>
       `;
+      applyTranslations(selectedLang); // Apply translation to new change button
+      
       document.getElementById('analyzeBtn').disabled = false;
       hide('resultCard'); hide('errorMsg');
     };
@@ -799,11 +954,13 @@ If you cannot identify the content as something from Japan, kindly ask them to t
     const data = await response.json();
     const text = data.content[0].text;
 
+    // Use default translation titles based on selected language if title parse fails
+    const defaultTitles = { ja: '発見！', en: 'Discovery!', zh: '发现！', ko: '발견!' };
     const nameMatch = text.match(/\[NAME\]:\s*(.+)/);
     const storyMatch = text.match(/\[STORY\]:\s*([\s\S]+?)(?=\[TIP\]|$)/);
     const tipMatch = text.match(/\[TIP\]:\s*([\s\S]+)/);
 
-    const title = nameMatch ? nameMatch[1].trim() : '発見！';
+    const title = nameMatch ? nameMatch[1].trim() : (defaultTitles[selectedLang] || defaultTitles['en']);
     const body = (storyMatch ? storyMatch[1].trim() : text)
       + (tipMatch ? '\n\n💡 ' + tipMatch[1].trim() : '');
 
@@ -832,13 +989,42 @@ If you cannot identify the content as something from Japan, kindly ask them to t
 function copyResult() {
   const title = document.getElementById('resultTitle').textContent;
   const body = document.getElementById('resultBody').textContent;
-  navigator.clipboard.writeText(`${title}\n\n${body}\n\n#和みっけ #WaMikke #Japan`);
-  alert('コピーしました！');
+  const textToCopy = `${title}\n\n${body}\n\n#和みっけ #WaMikke #Japan`;
+  
+  const textArea = document.createElement("textarea");
+  textArea.value = textToCopy;
+  document.body.appendChild(textArea);
+  textArea.select();
+  
+  try {
+    document.execCommand('copy');
+    // Show localized toast message
+    const toastMsg = (translations[selectedLang] || translations['en']).toast_copied;
+    showToast(toastMsg);
+  } catch (err) {
+    console.error('コピーに失敗しました', err);
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('wamikke-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'wamikke-toast';
+    toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:rgba(240,119,153,0.95); color:#fff; padding:12px 24px; border-radius:24px; font-size:14px; font-weight:bold; z-index:9999; box-shadow:0 4px 12px rgba(240,119,153,0.3); transition:opacity 0.3s; opacity:0; pointer-events:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, 3000);
 }
 
 function shareX() {
   const title = document.getElementById('resultTitle').textContent;
-  const text = encodeURIComponent(`${title} を和みっけで発見！🌸 #WaMikke #VisitJapan`);
+  const shareSuffix = (translations[selectedLang] || translations['en']).share_text;
+  const text = encodeURIComponent(`${title} ${shareSuffix}`);
   window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
 }
 
@@ -846,12 +1032,17 @@ function analyzeNew() {
   imageBase64 = null;
   const area = document.getElementById('uploadArea');
   area.classList.remove('has-image');
+  // Re-create innerHTML with data-i18n attributes
   area.innerHTML = `
     <div class="upload-icon">📷</div>
-    <div class="upload-text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span></div>
-    <div class="upload-hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
+    <div class="upload-text" data-i18n="upload_text">不思議なものを撮影・アップロード<br><span style="font-size:13px;color:#c0a0b0;">Tap to take or upload a photo</span></div>
+    <div class="upload-hint" data-i18n="upload_hint">居酒屋・神社・街中で見かけた「？」を写してください</div>
   `;
   area.onclick = () => document.getElementById('fileInput').click();
+  
+  // Re-apply translations specifically for the dynamically inserted text
+  applyTranslations(selectedLang);
+
   document.getElementById('analyzeBtn').disabled = true;
   hide('resultCard'); hide('errorMsg');
   window.scrollTo({ top: 0, behavior: 'smooth' });
