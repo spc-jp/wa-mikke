@@ -15,7 +15,6 @@
     overflow-x: hidden;
   }
 
-  /* 和風グラデーション背景 */
   .bg-pattern {
     position: fixed;
     top: 0; left: 0;
@@ -35,7 +34,6 @@
     padding: 20px 16px 60px;
   }
 
-  /* ヘッダー */
   .header {
     text-align: center;
     padding: 40px 0 30px;
@@ -53,7 +51,10 @@
     color: #D0A900;
     letter-spacing: 0.15em;
     font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    transition: opacity 0.2s;
   }
+
+  .title-ja:hover { opacity: 0.75; }
 
   .title-en {
     font-size: 14px;
@@ -69,10 +70,7 @@
     line-height: 1.6;
   }
 
-  /* 言語選択 */
-  .lang-section {
-    margin-bottom: 20px;
-  }
+  .lang-section { margin-bottom: 20px; }
 
   .section-label {
     font-size: 12px;
@@ -106,7 +104,6 @@
     background: rgba(208,169,0,0.08);
   }
 
-  /* アップロードエリア */
   .upload-area {
     border: 2px dashed #333;
     border-radius: 16px;
@@ -167,7 +164,6 @@
 
   input[type="file"] { display: none; }
 
-  /* カメラボタン */
   .camera-btn {
     width: 100%;
     padding: 12px;
@@ -186,7 +182,6 @@
     color: #f0ece4;
   }
 
-  /* 解析ボタン */
   .analyze-btn {
     width: 100%;
     padding: 18px;
@@ -213,7 +208,6 @@
     transform: none;
   }
 
-  /* 結果エリア */
   .result-card {
     background: #111;
     border: 1px solid #2a2a2a;
@@ -282,7 +276,6 @@
     color: #D0A900;
   }
 
-  /* ローディング */
   .loading {
     text-align: center;
     padding: 40px 20px;
@@ -308,7 +301,6 @@
     line-height: 1.8;
   }
 
-  /* 使用回数 */
   .trial-bar {
     background: #111;
     border: 1px solid #222;
@@ -324,7 +316,6 @@
 
   .trial-count { color: #D0A900; font-weight: 700; }
 
-  /* ペイウォール */
   .paywall {
     background: linear-gradient(135deg, #1a0a00, #0a0a1a);
     border: 1px solid #333;
@@ -355,10 +346,7 @@
     margin-bottom: 10px;
   }
 
-  /* サンプル examples */
-  .examples {
-    margin-top: 28px;
-  }
+  .examples { margin-top: 28px; }
 
   .examples-title {
     font-size: 13px;
@@ -384,7 +372,6 @@
     font-size: 12px;
   }
 
-  /* エラー */
   .error-msg {
     background: rgba(139,0,0,0.15);
     border: 1px solid rgba(139,0,0,0.3);
@@ -398,6 +385,23 @@
 
   .error-msg.visible { display: block; }
 
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px 0 20px;
+    font-size: 12px;
+    color: #444;
+    letter-spacing: 0.1em;
+  }
+
+  footer a {
+    color: #D0A900;
+    text-decoration: none;
+  }
+
+  footer a:hover { opacity: 0.75; }
+
   @media (max-width: 400px) {
     .lang-grid { grid-template-columns: repeat(2, 1fr); }
   }
@@ -409,10 +413,11 @@
 
 <div class="container">
 
-  <!-- ヘッダー -->
   <div class="header">
     <div class="logo-mark">⛩️</div>
-    <div class="title-ja">和みっけ</div>
+    <a href="#" onclick="resetApp(); return false;" style="text-decoration:none;">
+      <div class="title-ja">和みっけ</div>
+    </a>
     <div class="title-en">WA-MIKKE</div>
     <div class="tagline">
       「これって何だろう？」を、文化の物語に。<br>
@@ -420,13 +425,11 @@
     </div>
   </div>
 
-  <!-- 使用回数バー -->
   <div class="trial-bar">
     <span>🎌 無料体験</span>
     <span>あと <span class="trial-count" id="trialCount">3</span> 回使えます</span>
   </div>
 
-  <!-- 言語選択 -->
   <div class="lang-section">
     <div class="section-label">🌏 Your Language / 説明する言語</div>
     <div class="lang-grid">
@@ -442,7 +445,6 @@
     </div>
   </div>
 
-  <!-- アップロード -->
   <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
     <div class="upload-icon">📷</div>
     <div class="upload-text">
@@ -454,21 +456,17 @@
 
   <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
 
-  <!-- カメラ直接起動（スマホ用） -->
   <button class="camera-btn" onclick="openCamera()">
     📸 カメラで直接撮影する（スマホ向け）
   </button>
   <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
 
-  <!-- 解析ボタン -->
   <button class="analyze-btn" id="analyzeBtn" disabled onclick="analyze()">
     ⛩️ 日本の文化を解き明かす
   </button>
 
-  <!-- エラー -->
   <div class="error-msg" id="errorMsg"></div>
 
-  <!-- ローディング -->
   <div class="loading" id="loading">
     <div class="torii">⛩️</div>
     <div class="loading-text">
@@ -477,7 +475,6 @@
     </div>
   </div>
 
-  <!-- 結果 -->
   <div class="result-card" id="resultCard">
     <div class="result-badge">🎌 CULTURAL DISCOVERY</div>
     <div class="result-title" id="resultTitle"></div>
@@ -491,7 +488,6 @@
     </div>
   </div>
 
-  <!-- ペイウォール -->
   <div class="paywall" id="paywall">
     <div class="paywall-icon">🏮</div>
     <div class="paywall-title">もっと日本を知りたいですか？</div>
@@ -505,7 +501,6 @@
     </a>
   </div>
 
-  <!-- サンプル -->
   <div class="examples">
     <div class="examples-title">こんなものを撮ってみてください 📸</div>
     <div class="example-chips">
@@ -523,42 +518,32 @@
 
 </div>
 
+<footer>
+  Developed by <a href="https://smileplusctg.com" target="_blank">SPC</a>
+</footer>
+
 <script>
-// ========================================
-// 設定
-// ========================================
 const WORKER_URL = 'https://wa-mikke.yymmatsu.workers.dev';
 const FREE_LIMIT = 3;
 const STORAGE_KEY = 'wamikke_uses';
 
-// ========================================
-// 状態管理
-// ========================================
 let selectedLang = 'en';
 let imageBase64 = null;
 let imageMime = 'image/jpeg';
 
-// ========================================
-// 言語選択
-// ========================================
 function selectLang(btn) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   selectedLang = btn.dataset.lang;
 }
 
-// ========================================
-// ファイル処理（Canvas圧縮）
-// ========================================
 function handleFile(event) {
   const file = event.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = function(e) {
     const img = new Image();
     img.onload = function() {
-      // Canvas で 1280px にリサイズ
       const canvas = document.createElement('canvas');
       const MAX = 1280;
       let w = img.width, h = img.height;
@@ -572,7 +557,6 @@ function handleFile(event) {
       imageBase64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
       imageMime = 'image/jpeg';
 
-      // プレビュー表示
       const area = document.getElementById('uploadArea');
       area.classList.add('has-image');
       area.innerHTML = `
@@ -580,8 +564,6 @@ function handleFile(event) {
         <button class="change-btn" onclick="changeImage(event)">✏️ 変更</button>
       `;
       document.getElementById('analyzeBtn').disabled = false;
-
-      // 結果・エラーリセット
       hide('resultCard'); hide('errorMsg');
     };
     img.src = e.target.result;
@@ -598,9 +580,6 @@ function changeImage(e) {
   document.getElementById('fileInput').click();
 }
 
-// ========================================
-// 使用回数管理
-// ========================================
 function getUses() {
   return parseInt(localStorage.getItem(STORAGE_KEY) || '0');
 }
@@ -619,9 +598,6 @@ function updateTrialBar() {
 
 updateTrialBar();
 
-// ========================================
-// 解析メイン
-// ========================================
 async function analyze() {
   if (!imageBase64) return;
 
@@ -674,7 +650,6 @@ If you cannot identify the content as something from Japan, kindly ask them to t
     const data = await response.json();
     const text = data.content[0].text;
 
-    // パース
     const nameMatch = text.match(/\[NAME\]:\s*(.+)/);
     const storyMatch = text.match(/\[STORY\]:\s*([\s\S]+?)(?=\[TIP\]|$)/);
     const tipMatch = text.match(/\[TIP\]:\s*([\s\S]+)/);
@@ -703,9 +678,6 @@ If you cannot identify the content as something from Japan, kindly ask them to t
   }
 }
 
-// ========================================
-// シェア・ユーティリティ
-// ========================================
 function copyResult() {
   const title = document.getElementById('resultTitle').textContent;
   const body = document.getElementById('resultBody').textContent;
@@ -734,9 +706,12 @@ function analyzeNew() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ========================================
-// 表示制御
-// ========================================
+function resetApp() {
+  analyzeNew();
+  hide('paywall');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function show(id) { document.getElementById(id).classList.add('visible'); }
 function hide(id) { document.getElementById(id).classList.remove('visible'); }
 function showError(msg) {
