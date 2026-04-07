@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご購入ありがとうございます | 和みっけ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0a0a;
+    color: #f0ece4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-x: hidden;
+  }
+
+  .bg-pattern {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(139,0,0,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(208,169,0,0.10) 0%, transparent 50%),
+      #0a0a0a;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    padding: 40px 28px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-mark { font-size: 48px; margin-bottom: 8px; }
+
+  .title-ja {
+    font-size: 26px;
+    font-weight: 700;
+    color: #D0A900;
+    letter-spacing: 0.15em;
+    font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  }
+
+  .title-en {
+    font-size: 13px;
+    color: #666;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+  }
+
+  .thanks-badge {
+    display: inline-block;
+    background: rgba(208,169,0,0.12);
+    color: #D0A900;
+    border: 1px solid rgba(208,169,0,0.3);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .message {
+    font-size: 15px;
+    color: #c8c0b0;
+    line-height: 1.9;
+    margin-bottom: 28px;
+  }
+
+  /* パスワードボックス */
+  .pw-section {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 24px 20px;
+    margin-bottom: 28px;
+  }
+
+  .pw-label {
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .pw-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #1a1a1a;
+    border: 1.5px solid #D0A900;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+
+  .pw-text {
+    font-size: 26px;
+    font-weight: 700;
+    color: #D0A900;
+    letter-spacing: 0.2em;
+    font-family: monospace;
+  }
+
+  .copy-btn {
+    background: rgba(208,169,0,0.15);
+    border: 1px solid rgba(208,169,0,0.3);
+    color: #D0A900;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover {
+    background: rgba(208,169,0,0.25);
+  }
+
+  .pw-note {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* QRエリア */
+  .qr-section { margin-bottom: 28px; }
+
+  .qr-label {
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .qr-frame {
+    display: inline-block;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .qr-frame img {
+    width: 160px;
+    height: 160px;
+    display: block;
+  }
+
+  .qr-url {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .qr-url a {
+    color: #D0A900;
+    text-decoration: none;
+  }
+
+  .qr-url a:hover { opacity: 0.75; }
+
+  /* アプリへのボタン */
+  .app-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #8b0000, #c0392b);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all 0.3s;
+    margin-bottom: 12px;
+  }
+
+  .app-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(139,0,0,0.4);
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #1e1e1e;
+    margin: 24px 0;
+  }
+
+  .steps {
+    text-align: left;
+    font-size: 13px;
+    color: #888;
+    line-height: 2;
+  }
+
+  .steps li {
+    list-style: none;
+    padding-left: 4px;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    margin-top: 24px;
+    font-size: 12px;
+    color: #333;
+    letter-spacing: 0.1em;
+  }
+
+  footer a {
+    color: #555;
+    text-decoration: none;
+  }
+
+  footer a:hover { color: #D0A900; }
+</style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+
+<div class="card">
+
+  <div class="logo-mark">⛩️</div>
+  <div class="title-ja">和みっけ</div>
+  <div class="title-en">WA-MIKKE</div>
+
+  <div class="thanks-badge">🎌 ご購入ありがとうございます</div>
+
+  <div class="message">
+    日本の文化の扉が、あなたのために開きました。<br>
+    以下のパスワードをアプリに入力して、<br>
+    無制限でお楽しみください。
+  </div>
+
+  <!-- パスワード -->
+  <div class="pw-section">
+    <div class="pw-label">🔑 Your Password / パスワード</div>
+    <div class="pw-box">
+      <div class="pw-text" id="pwText">wa2025</div>
+      <button class="copy-btn" onclick="copyPW()">📋 コピー</button>
+    </div>
+    <div class="pw-note">
+      このパスワードは大切に保管してください。<br>
+      Please keep this password safe.
+    </div>
+  </div>
+
+  <!-- QRコード -->
+  <div class="qr-section">
+    <div class="qr-label">📱 アプリを開く / Open App</div>
+    <div class="qr-frame">
+      <img src="QR_wa-mikke.png" alt="和みっけ QRコード">
+    </div>
+    <div class="qr-url">
+      <a href="https://wa-mikke.pages.dev/" target="_blank">https://wa-mikke.pages.dev/</a>
+    </div>
+  </div>
+
+  <!-- アプリボタン -->
+  <a href="https://wa-mikke.pages.dev/" target="_blank" class="app-btn">
+    ⛩️ 和みっけを開く
+  </a>
+
+  <hr class="divider">
+
+  <!-- 使い方ステップ -->
+  <ul class="steps">
+    <li>① アプリを開く</li>
+    <li>② 言語を選ぶ（9言語対応）</li>
+    <li>③ 不思議なものを写真に撮る</li>
+    <li>④ 「日本の文化を解き明かす」をタップ</li>
+    <li>⑤ パスワードを入力して無制限モードへ</li>
+  </ul>
+
+</div>
+
+<footer>
+  Developed by <a href="https://smileplusctg.com" target="_blank">SPC</a>
+</footer>
+
+<script>
+function copyPW() {
+  navigator.clipboard.writeText('wa2025').then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ コピー済';
+    setTimeout(() => { btn.textContent = '📋 コピー'; }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
