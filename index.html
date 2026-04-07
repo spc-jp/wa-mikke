@@ -316,6 +316,23 @@
 
   .trial-count { color: #D0A900; font-weight: 700; }
 
+  /* Pro解放済みバッジ */
+  .pro-bar {
+    background: linear-gradient(135deg, rgba(208,169,0,0.1), rgba(139,0,0,0.1));
+    border: 1px solid rgba(208,169,0,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #D0A900;
+  }
+
+  .pro-bar.visible { display: flex; }
+
+  /* ペイウォール */
   .paywall {
     background: linear-gradient(135deg, #1a0a00, #0a0a1a);
     border: 1px solid #333;
@@ -343,9 +360,82 @@
     border-radius: 12px;
     cursor: pointer;
     text-decoration: none;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    transition: all 0.2s;
   }
 
+  .paywall-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(208,169,0,0.3);
+  }
+
+  /* パスワード入力エリア */
+  .pw-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .pw-divider-line {
+    flex: 1;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .pw-divider-text {
+    font-size: 12px;
+    color: #444;
+    white-space: nowrap;
+  }
+
+  .pw-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .pw-input {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #f0ece4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .pw-input:focus { border-color: #D0A900; }
+  .pw-input::placeholder { color: #444; letter-spacing: 0.05em; }
+
+  .pw-submit {
+    background: #1a1a1a;
+    border: 1.5px solid #333;
+    color: #aaa;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .pw-submit:hover {
+    border-color: #D0A900;
+    color: #D0A900;
+  }
+
+  .pw-error {
+    font-size: 12px;
+    color: #ff6060;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .pw-error.visible { display: block; }
+
+  /* examples */
   .examples { margin-top: 28px; }
 
   .examples-title {
@@ -395,11 +485,7 @@
     letter-spacing: 0.1em;
   }
 
-  footer a {
-    color: #D0A900;
-    text-decoration: none;
-  }
-
+  footer a { color: #D0A900; text-decoration: none; }
   footer a:hover { opacity: 0.75; }
 
   @media (max-width: 400px) {
@@ -425,11 +511,19 @@
     </div>
   </div>
 
-  <div class="trial-bar">
+  <!-- 通常トライアルバー -->
+  <div class="trial-bar" id="trialBar">
     <span>🎌 無料体験</span>
     <span>あと <span class="trial-count" id="trialCount">3</span> 回使えます</span>
   </div>
 
+  <!-- Pro解放済みバー -->
+  <div class="pro-bar" id="proBar">
+    <span>🔓 Pro版 無制限モード</span>
+    <span style="font-size:12px; color:#888;">パスワード認証済み</span>
+  </div>
+
+  <!-- 言語選択 -->
   <div class="lang-section">
     <div class="section-label">🌏 Your Language / 説明する言語</div>
     <div class="lang-grid">
@@ -445,6 +539,7 @@
     </div>
   </div>
 
+  <!-- アップロード -->
   <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
     <div class="upload-icon">📷</div>
     <div class="upload-text">
@@ -467,6 +562,7 @@
 
   <div class="error-msg" id="errorMsg"></div>
 
+  <!-- ローディング -->
   <div class="loading" id="loading">
     <div class="torii">⛩️</div>
     <div class="loading-text">
@@ -475,6 +571,7 @@
     </div>
   </div>
 
+  <!-- 結果 -->
   <div class="result-card" id="resultCard">
     <div class="result-badge">🎌 CULTURAL DISCOVERY</div>
     <div class="result-title" id="resultTitle"></div>
@@ -488,19 +585,34 @@
     </div>
   </div>
 
+  <!-- ペイウォール -->
   <div class="paywall" id="paywall">
     <div class="paywall-icon">🏮</div>
     <div class="paywall-title">もっと日本を知りたいですか？</div>
     <div class="paywall-text">
       無料体験の3回が終了しました。<br>
       Pro版では無制限で日本文化の謎を解き明かせます。<br><br>
-      <span style="color:#D0A900;">¥980/月（いつでも解約可能）</span>
+      <span style="color:#D0A900; font-size:18px; font-weight:700;">¥1,980／月</span><br>
+      <span style="font-size:12px;">いつでも解約可能</span>
     </div>
-    <a href="https://buy.stripe.com/your-link" class="paywall-btn">
-      🎌 Pro版で続ける — ¥980/月
+    <a href="https://buy.stripe.com/your-link" class="paywall-btn" target="_blank">
+      🎌 Pro版に申し込む — ¥1,980/月
     </a>
+
+    <!-- パスワード入力 -->
+    <div class="pw-divider">
+      <div class="pw-divider-line"></div>
+      <div class="pw-divider-text">購入済みの方はこちら</div>
+      <div class="pw-divider-line"></div>
+    </div>
+    <div class="pw-input-row">
+      <input type="password" class="pw-input" id="pwInput" placeholder="パスワードを入力 / Enter password">
+      <button class="pw-submit" onclick="checkPassword()">🔓 解除</button>
+    </div>
+    <div class="pw-error" id="pwError">パスワードが違います / Incorrect password</div>
   </div>
 
+  <!-- サンプル -->
   <div class="examples">
     <div class="examples-title">こんなものを撮ってみてください 📸</div>
     <div class="example-chips">
@@ -526,17 +638,45 @@
 const WORKER_URL = 'https://wa-mikke.yymmatsu.workers.dev';
 const FREE_LIMIT = 3;
 const STORAGE_KEY = 'wamikke_uses';
+const PRO_KEY = 'wamikke_pro';
+const PASSWORD = 'wa2025';
 
 let selectedLang = 'en';
 let imageBase64 = null;
 let imageMime = 'image/jpeg';
 
+// ========================================
+// 初期化
+// ========================================
+function init() {
+  updateTrialBar();
+  if (isPro()) {
+    showProMode();
+  }
+}
+
+function isPro() {
+  return localStorage.getItem(PRO_KEY) === 'true';
+}
+
+function showProMode() {
+  document.getElementById('trialBar').style.display = 'none';
+  document.getElementById('proBar').classList.add('visible');
+  hide('paywall');
+}
+
+// ========================================
+// 言語選択
+// ========================================
 function selectLang(btn) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   selectedLang = btn.dataset.lang;
 }
 
+// ========================================
+// ファイル処理
+// ========================================
 function handleFile(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -580,6 +720,9 @@ function changeImage(e) {
   document.getElementById('fileInput').click();
 }
 
+// ========================================
+// 使用回数管理
+// ========================================
 function getUses() {
   return parseInt(localStorage.getItem(STORAGE_KEY) || '0');
 }
@@ -591,20 +734,58 @@ function incrementUses() {
 }
 
 function updateTrialBar() {
-  const uses = getUses();
-  const remaining = Math.max(0, FREE_LIMIT - uses);
+  if (isPro()) return;
+  const remaining = Math.max(0, FREE_LIMIT - getUses());
   document.getElementById('trialCount').textContent = remaining;
 }
 
-updateTrialBar();
+// ========================================
+// パスワード確認
+// ========================================
+function checkPassword() {
+  const input = document.getElementById('pwInput').value.trim();
+  const errEl = document.getElementById('pwError');
 
+  if (input === PASSWORD) {
+    localStorage.setItem(PRO_KEY, 'true');
+    errEl.classList.remove('visible');
+    showProMode();
+    // 写真があればそのまま解析へ
+    if (imageBase64) {
+      hide('paywall');
+      analyze();
+    } else {
+      hide('paywall');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } else {
+    errEl.classList.add('visible');
+    document.getElementById('pwInput').style.borderColor = '#ff6060';
+    setTimeout(() => {
+      document.getElementById('pwInput').style.borderColor = '#333';
+    }, 2000);
+  }
+}
+
+// Enterキーでも送信
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('paywall').classList.contains('visible')) {
+    checkPassword();
+  }
+});
+
+// ========================================
+// 解析メイン
+// ========================================
 async function analyze() {
   if (!imageBase64) return;
 
-  const uses = getUses();
-  if (uses >= FREE_LIMIT) {
-    show('paywall');
-    return;
+  if (!isPro()) {
+    const uses = getUses();
+    if (uses >= FREE_LIMIT) {
+      show('paywall');
+      return;
+    }
   }
 
   show('loading');
@@ -662,12 +843,14 @@ If you cannot identify the content as something from Japan, kindly ask them to t
     document.getElementById('resultBody').textContent = body;
 
     show('resultCard');
-    incrementUses();
-    updateTrialBar();
 
-    const remaining = FREE_LIMIT - getUses();
-    if (remaining <= 0) {
-      setTimeout(() => show('paywall'), 1500);
+    if (!isPro()) {
+      incrementUses();
+      updateTrialBar();
+      const remaining = FREE_LIMIT - getUses();
+      if (remaining <= 0) {
+        setTimeout(() => show('paywall'), 1500);
+      }
     }
 
   } catch(err) {
@@ -678,6 +861,9 @@ If you cannot identify the content as something from Japan, kindly ask them to t
   }
 }
 
+// ========================================
+// シェア・ユーティリティ
+// ========================================
 function copyResult() {
   const title = document.getElementById('resultTitle').textContent;
   const body = document.getElementById('resultBody').textContent;
@@ -719,6 +905,8 @@ function showError(msg) {
   el.textContent = msg;
   el.classList.add('visible');
 }
+
+init();
 </script>
 
 </body>
